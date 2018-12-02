@@ -29,7 +29,6 @@
     </licenses>
     <modules>
         <module>frpc-core</module>
-        <module>frpc-core</module>
     </modules>
 
     <properties>
