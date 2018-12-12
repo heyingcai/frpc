@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <name>frpc-parent</name>
-    <groupId>com.jibug</groupId>
+    <groupId>com.jibug.frpc</groupId>
     <artifactId>frpc-parent</artifactId>
     <packaging>pom</packaging>
     <version>0.1.0</version>
@@ -29,6 +29,8 @@
     </licenses>
     <modules>
         <module>frpc-core</module>
+        <module>frpc-common</module>
+        <module>frpc-net</module>
     </modules>
 
     <properties>
