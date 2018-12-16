@@ -8,6 +8,8 @@ import java.io.IOException;
 public interface Serialize {
 
     /**
+     * 序列化
+     *
      * @param object
      * @return
      * @throws IOException
@@ -15,6 +17,8 @@ public interface Serialize {
     byte[] serialize(Object object) throws IOException;
 
     /**
+     * 反序列化
+     *
      * @param bytes
      * @param clazz
      * @param <T>
