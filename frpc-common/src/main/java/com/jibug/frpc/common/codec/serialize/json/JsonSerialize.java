@@ -1,11 +1,11 @@
-package com.jibug.frpc.core.common.codec.serialize.json;
+package com.jibug.frpc.common.codec.serialize.json;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.JSONSerializer;
 import com.alibaba.fastjson.serializer.SerializeWriter;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.util.IOUtils;
-import com.jibug.frpc.core.common.codec.serialize.Serialize;
+import com.jibug.frpc.common.codec.serialize.Serialize;
 
 import java.io.IOException;
 

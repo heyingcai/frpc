@@ -1,4 +1,4 @@
-package com.jibug.frpc.core.common.codec.serialize;
+package com.jibug.frpc.common.codec.serialize;
 
 import java.io.IOException;
 

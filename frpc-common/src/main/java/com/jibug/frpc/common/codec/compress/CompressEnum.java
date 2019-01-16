@@ -1,4 +1,4 @@
-package com.jibug.frpc.core.common.codec.compress;
+package com.jibug.frpc.common.codec.compress;
 
 /**
  * @author heyingcai

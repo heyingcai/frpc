@@ -1,4 +1,4 @@
-package com.jibug.frpc.core.common.model;
+package com.jibug.frpc.common.model;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.jibug.frpc.core.common.codec.compress;
+package com.jibug.frpc.common.codec.compress;
 
 import org.xerial.snappy.Snappy;
 
@@ -9,6 +9,7 @@ import java.io.IOException;
  */
 public class SnappyCompress implements Compress{
 
+    @Override
     public byte[] compress(byte[] bytes) throws IOException {
         if (bytes == null) {
             return null;
@@ -16,6 +17,7 @@ public class SnappyCompress implements Compress{
         return Snappy.compress(bytes);
     }
 
+    @Override
     public byte[] restore(byte[] bytes) throws IOException {
         if (bytes == null) {
             return null;
