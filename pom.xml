@@ -45,6 +45,7 @@
         <fastjson.version>1.2.47</fastjson.version>
         <lzo.version>1.0.5</lzo.version>
         <lz4.version>1.2.0</lz4.version>
+        <esotericsoftware.kryo.version>2.24.0</esotericsoftware.kryo.version>
     </properties>
 
 
@@ -95,7 +96,26 @@
                 <artifactId>lz4</artifactId>
                 <version>${lz4.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.esotericsoftware.kryo</groupId>
+                <artifactId>kryo</artifactId>
+                <version>${esotericsoftware.kryo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dyuproject.protostuff</groupId>
+                <artifactId>protostuff-core</artifactId>
+                <version>1.0.8</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dyuproject.protostuff</groupId>
+                <artifactId>protostuff-runtime</artifactId>
+                <version>1.0.8</version>
+            </dependency>
+            <dependency>
+                <groupId>org.objenesis</groupId>
+                <artifactId>objenesis</artifactId>
+                <version>2.1</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

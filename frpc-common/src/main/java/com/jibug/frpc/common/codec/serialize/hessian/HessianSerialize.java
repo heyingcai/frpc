@@ -7,6 +7,8 @@ import com.jibug.frpc.common.codec.serialize.Serialize;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * @author heyingcai
@@ -21,7 +23,7 @@ public class HessianSerialize implements Serialize {
      * @throws IOException
      */
     @Override
-    public byte[] serialize(Object object) throws IOException {
+    public byte[] serialize(OutputStream output, Object object) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         Hessian2Output out = new Hessian2Output(bos);
         out.writeObject(object);
@@ -41,7 +43,7 @@ public class HessianSerialize implements Serialize {
      * @throws ClassNotFoundException
      */
     @Override
-    public <T> T deserialize(byte[] bytes, Class<T> clazz) throws IOException, ClassNotFoundException {
+    public <T> T deserialize(InputStream inputStream, byte[] bytes, Class<T> clazz) throws IOException, ClassNotFoundException {
         ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
         Hessian2Input input = new Hessian2Input(bis);
         input.startMessage();
