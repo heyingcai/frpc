@@ -12,6 +12,16 @@
     <artifactId>frpc-boot</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>com.jibug.frpc</groupId>
+            <artifactId>frpc-core</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jibug.frpc</groupId>
+            <artifactId>frpc-common</artifactId>
+            <version>0.1.0</version>
+        </dependency>
         <!-- Spring Boot dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

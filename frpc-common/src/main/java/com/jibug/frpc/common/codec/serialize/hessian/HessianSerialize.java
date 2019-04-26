@@ -23,13 +23,13 @@ public class HessianSerialize implements Serialize {
      * @throws IOException
      */
     @Override
-    public byte[] serialize(OutputStream output, Object object) throws IOException {
+    public void serialize(OutputStream output, Object object) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         Hessian2Output out = new Hessian2Output(bos);
         out.writeObject(object);
         out.completeMessage();
         out.close();
-        return bos.toByteArray();
+//        return bos.toByteArray();
     }
 
     /**

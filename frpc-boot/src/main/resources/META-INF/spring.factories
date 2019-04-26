@@ -1,5 +1,5 @@
 ## AutoConfiguration
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.jibug.frpc.boot.config.FrpcConfig,\
+com.jibug.frpc.boot.config.FrpcConfig\
 
 

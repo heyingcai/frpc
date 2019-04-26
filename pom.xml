@@ -32,6 +32,7 @@
         <module>frpc-common</module>
         <module>frpc-net</module>
         <module>frpc-boot</module>
+        <module>frpc-samples</module>
     </modules>
 
     <properties>

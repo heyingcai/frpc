@@ -1,8 +1,6 @@
 package com.jibug.frpc.boot.registar;
 
-import com.jibug.frpc.boot.annotation.EnableFrpc;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -11,7 +9,6 @@ import org.springframework.core.type.AnnotationMetadata;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Map;
 
 /**
  * @author heyingcai
@@ -19,7 +16,7 @@ import java.util.Map;
 public class FrpcRegistrar implements ImportBeanDefinitionRegistrar {
 
     static {
-        Resource resource = new ClassPathResource("banner.txt");
+        Resource resource = new ClassPathResource("logo.txt");
         if (resource.exists()) {
             try {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(resource.getInputStream()));
@@ -47,6 +44,11 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar {
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry) {
-
+        try {
+            String basePackage = Class.forName(annotationMetadata.getClassName()).getPackage().getName();
+            System.out.println(basePackage);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
