@@ -1,4 +1,4 @@
-package com.jibug.frpc.annotation;
+package com.jibug.frpc.common.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
