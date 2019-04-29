@@ -1,5 +1,8 @@
 package com.jibug.frpc.boot.registar;
 
+import com.jibug.frpc.common.codec.compress.CompressEnum;
+import com.jibug.frpc.common.codec.serialize.SerializeProtocolEnum;
+
 import java.io.Serializable;
 
 /**
@@ -11,9 +14,9 @@ public class RpcClientDelegate extends RpcProxyFactoryBean implements Serializab
 
     private String host;
 
-    private String protocol;
+    private SerializeProtocolEnum protocol;
 
-    private String compressType;
+    private CompressEnum compress;
 
     private int timeout;
 
@@ -32,20 +35,20 @@ public class RpcClientDelegate extends RpcProxyFactoryBean implements Serializab
         this.host = host;
     }
 
-    public String getProtocol() {
+    public SerializeProtocolEnum getProtocol() {
         return protocol;
     }
 
-    public void setProtocol(String protocol) {
+    public void setProtocol(SerializeProtocolEnum protocol) {
         this.protocol = protocol;
     }
 
-    public String getCompressType() {
-        return compressType;
+    public CompressEnum getCompress() {
+        return compress;
     }
 
-    public void setCompressType(String compressType) {
-        this.compressType = compressType;
+    public void setCompress(CompressEnum compress) {
+        this.compress = compress;
     }
 
     public int getTimeout() {

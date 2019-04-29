@@ -10,5 +10,4 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(basePackages = {"com.jibug"})
 public class FrpcConfig {
 
-
 }

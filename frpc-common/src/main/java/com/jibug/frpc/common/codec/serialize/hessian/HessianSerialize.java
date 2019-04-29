@@ -29,7 +29,6 @@ public class HessianSerialize implements Serialize {
         out.writeObject(object);
         out.completeMessage();
         out.close();
-//        return bos.toByteArray();
     }
 
     /**

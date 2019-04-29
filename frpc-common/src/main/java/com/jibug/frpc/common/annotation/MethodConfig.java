@@ -9,20 +9,20 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * @author heyingcai
+ * @date 2019-04-29 11:03
+ */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface RpcClient {
+@Target(ElementType.METHOD)
+public @interface MethodConfig {
 
-    String serverName();
-
-    String host() default "localhost";
-
-    int port() default ConfigConsts.DEFAULT_SERVER_PORT;
+    String methodName() default "";
 
     int timeout() default ConfigConsts.DEFAULT_TIMEOUT;
 
     CompressEnum compress() default CompressEnum.NONE;
 
-    SerializeProtocolEnum protocol() default SerializeProtocolEnum.JDK_SERIALIZE;
+    SerializeProtocolEnum serialze() default SerializeProtocolEnum.JDK_SERIALIZE;
 
 }
