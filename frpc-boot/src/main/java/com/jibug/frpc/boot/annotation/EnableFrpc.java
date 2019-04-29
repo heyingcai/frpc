@@ -11,6 +11,6 @@ import java.lang.annotation.*;
 @Import({FrpcRegistrar.class})
 public @interface EnableFrpc {
 
-    String[] basePackages() default {"com.jibug"};
+    String[] basePackages();
 
 }

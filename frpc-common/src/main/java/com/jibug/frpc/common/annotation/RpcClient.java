@@ -19,6 +19,8 @@ public @interface RpcClient {
 
     int port() default ConfigConsts.DEFAULT_SERVER_PORT;
 
+    String serviceName() default "";
+
     int timeout() default ConfigConsts.DEFAULT_TIMEOUT;
 
     CompressEnum compress() default CompressEnum.NONE;

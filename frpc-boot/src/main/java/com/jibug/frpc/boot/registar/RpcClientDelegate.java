@@ -12,7 +12,13 @@ public class RpcClientDelegate extends RpcProxyFactoryBean implements Serializab
 
     private static final long serialVersionUID = -6152821513259137910L;
 
+    private String serverName;
+
     private String host;
+
+    private int port;
+
+    private String serviceName;
 
     private SerializeProtocolEnum protocol;
 
@@ -22,9 +28,12 @@ public class RpcClientDelegate extends RpcProxyFactoryBean implements Serializab
 
     private int version;
 
+    public String getServerName() {
+        return serverName;
+    }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
     }
 
     public String getHost() {
@@ -33,6 +42,22 @@ public class RpcClientDelegate extends RpcProxyFactoryBean implements Serializab
 
     public void setHost(String host) {
         this.host = host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 
     public SerializeProtocolEnum getProtocol() {
