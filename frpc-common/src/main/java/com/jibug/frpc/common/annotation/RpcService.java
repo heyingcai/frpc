@@ -11,20 +11,55 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface RpcClient {
+public @interface RpcService {
 
+    /**
+     * 对应的服务application name
+     *
+     * @return
+     */
     String serverName();
 
+    /**
+     * host 用于直连
+     *
+     * @return
+     */
     String host() default "localhost";
 
+    /**
+     * port
+     *
+     * @return
+     */
     int port() default ConfigConsts.DEFAULT_SERVER_PORT;
 
+    /**
+     * 服务提供者的bean name
+     *
+     * @return
+     */
     String serviceName() default "";
 
+    /**
+     * 服务超时控制
+     *
+     * @return
+     */
     int timeout() default ConfigConsts.DEFAULT_TIMEOUT;
 
+    /**
+     * 数据压缩类型
+     *
+     * @return
+     */
     CompressEnum compress() default CompressEnum.NONE;
 
+    /**
+     * 序列化类型
+     *
+     * @return
+     */
     SerializeProtocolEnum protocol() default SerializeProtocolEnum.JDK_SERIALIZE;
 
 }
