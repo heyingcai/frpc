@@ -1,13 +1,19 @@
 package com.jibug.frpc.boot.registar;
 
 import com.jibug.frpc.boot.annotation.EnableFrpc;
+import com.jibug.frpc.boot.proxy.RpcMethodInterceptor;
 import com.jibug.frpc.common.annotation.RpcService;
+import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.type.AnnotationMetadata;
@@ -17,6 +23,7 @@ import org.springframework.util.ClassUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.annotation.Annotation;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -24,7 +31,7 @@ import java.util.Set;
 /**
  * @author heyingcai
  */
-public class FrpcRegistrar implements ImportBeanDefinitionRegistrar {
+public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, EnvironmentAware, BeanClassLoaderAware {
 
     static {
         Resource resource = new ClassPathResource("logo.txt");
@@ -53,12 +60,14 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar {
         System.out.println("Author: heyingcai. Email: admin@jibug.com");
     }
 
+    private Environment environment;
+
+    private ClassLoader classLoader;
+
     @Override
     public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry) {
-        ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
+        ClassPathScanningCandidateComponentProvider provider = getScanner();
         provider.addIncludeFilter(new AnnotationTypeFilter(RpcService.class));
-        Map<String, Object> attributes = annotationMetadata.getAnnotationAttributes(EnableFrpc.class.getName());
-
         Set<String> basePackages = resolveBasePackages(annotationMetadata);
 
         for (String basePackage : basePackages) {
@@ -66,12 +75,37 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar {
             for (BeanDefinition beanDefinition : beanDefinitions) {
                 if (beanDefinition instanceof AnnotatedBeanDefinition) {
                     AnnotatedBeanDefinition annotatedBeanDefinition = (AnnotatedBeanDefinition) beanDefinition;
-
+                    registerRpcServiceProxyBean(annotatedBeanDefinition, registry);
                 }
             }
         }
+    }
 
-        System.out.println(attributes);
+    protected ClassPathScanningCandidateComponentProvider getScanner() {
+
+        return new ClassPathScanningCandidateComponentProvider(false, this.environment) {
+
+            @Override
+            protected boolean isCandidateComponent(
+                    AnnotatedBeanDefinition beanDefinition) {
+                if (beanDefinition.getMetadata().isIndependent()) {
+
+                    if (beanDefinition.getMetadata().isInterface() && beanDefinition.getMetadata().getInterfaceNames().length == 1
+                            && Annotation.class.getName().equals(beanDefinition.getMetadata().getInterfaceNames()[0])) {
+                        try {
+                            Class<?> target = ClassUtils.forName(beanDefinition.getMetadata().getClassName(), FrpcRegistrar.this.classLoader);
+                            return !target.isAnnotation();
+                        } catch (Exception ex) {
+                            this.logger.error("Could not load target class: " + beanDefinition.getMetadata().getClassName(), ex);
+
+                        }
+                    }
+                    return true;
+                }
+                return false;
+
+            }
+        };
     }
 
     private Set<String> resolveBasePackages(AnnotationMetadata annotationMetadata) {
@@ -88,11 +122,11 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar {
         return packages;
     }
 
-    private void registerRpcClientProxyBean(AnnotatedBeanDefinition annotatedBeanDefinition) {
+    private void registerRpcServiceProxyBean(AnnotatedBeanDefinition annotatedBeanDefinition, BeanDefinitionRegistry registry) {
         AnnotationMetadata metadata = annotatedBeanDefinition.getMetadata();
         String className = metadata.getClassName();
         BeanDefinitionBuilder definition = BeanDefinitionBuilder
-                .genericBeanDefinition(RpcClientDelegate.class);
+                .genericBeanDefinition(RpcServiceDelegate.class);
         Map<String, Object> annotationAttributes = metadata.getAnnotationAttributes(RpcService.class.getName());
 
         definition.addPropertyValue("serverName", annotationAttributes.get("serverName"));
@@ -102,11 +136,25 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar {
         definition.addPropertyValue("protocol", annotationAttributes.get("protocol"));
         definition.addPropertyValue("compress", annotationAttributes.get("compress"));
         definition.addPropertyValue("timeout", annotationAttributes.get("timeout"));
+        definition.addPropertyValue("interceptor", new RpcMethodInterceptor());
         try {
             definition.addPropertyValue("interfaceName", Class.forName(className));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        BeanDefinitionHolder holder = new BeanDefinitionHolder(definition.getBeanDefinition(), className,
+                new String[]{className});
+        BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
 
+    }
+
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
+
+    @Override
+    public void setBeanClassLoader(ClassLoader classLoader) {
+        this.classLoader = classLoader;
     }
 }

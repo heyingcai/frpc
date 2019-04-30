@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@EnableFrpc
+@EnableFrpc(basePackages = "com.jibug")
 public class SamplesApplication {
 
     public static void main(String[] args) {

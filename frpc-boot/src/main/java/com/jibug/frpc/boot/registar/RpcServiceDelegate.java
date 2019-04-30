@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * @author heyingcai
  */
-public class RpcClientDelegate extends RpcProxyFactoryBean implements Serializable {
+public class RpcServiceDelegate extends RpcProxyFactoryBean implements Serializable {
 
     private static final long serialVersionUID = -6152821513259137910L;
 
