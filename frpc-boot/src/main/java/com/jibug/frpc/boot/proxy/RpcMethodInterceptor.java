@@ -14,6 +14,7 @@ public class RpcMethodInterceptor implements MethodInterceptor {
     public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         Method method = methodInvocation.getMethod();
         Object[] arguments = methodInvocation.getArguments();
+
         return null;
     }
 }
