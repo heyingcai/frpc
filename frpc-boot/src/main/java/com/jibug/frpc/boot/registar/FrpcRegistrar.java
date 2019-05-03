@@ -66,7 +66,7 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry) {
-        ClassPathScanningCandidateComponentProvider provider = getScanner();
+        ClassPathScanningCandidateComponentProvider provider = componentScanner();
         provider.addIncludeFilter(new AnnotationTypeFilter(RpcService.class));
         Set<String> basePackages = resolveBasePackages(annotationMetadata);
 
@@ -81,7 +81,7 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
         }
     }
 
-    protected ClassPathScanningCandidateComponentProvider getScanner() {
+    protected ClassPathScanningCandidateComponentProvider componentScanner() {
 
         return new ClassPathScanningCandidateComponentProvider(false, this.environment) {
 
@@ -96,8 +96,7 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
                             Class<?> target = ClassUtils.forName(beanDefinition.getMetadata().getClassName(), FrpcRegistrar.this.classLoader);
                             return !target.isAnnotation();
                         } catch (Exception ex) {
-                            this.logger.error("Could not load target class: " + beanDefinition.getMetadata().getClassName(), ex);
-
+                            logger.error("Could not load target class: " + beanDefinition.getMetadata().getClassName(), ex);
                         }
                     }
                     return true;
@@ -135,6 +134,8 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
         definition.addPropertyValue("serviceName", annotationAttributes.get("serviceName"));
         definition.addPropertyValue("protocol", annotationAttributes.get("protocol"));
         definition.addPropertyValue("compress", annotationAttributes.get("compress"));
+        definition.addPropertyValue("haStrategyType", annotationAttributes.get("haStrategyType"));
+        definition.addPropertyValue("loadBalanceType", annotationAttributes.get("loadBalanceType"));
         definition.addPropertyValue("timeout", annotationAttributes.get("timeout"));
         definition.addPropertyValue("interceptor", new RpcMethodInterceptor());
         try {
@@ -145,7 +146,6 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
         BeanDefinitionHolder holder = new BeanDefinitionHolder(definition.getBeanDefinition(), className,
                 new String[]{className});
         BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
-
     }
 
     @Override

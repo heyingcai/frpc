@@ -1,5 +1,7 @@
 package com.jibug.frpc.boot.registar;
 
+import com.jibug.frpc.common.cluster.HaStrategyType;
+import com.jibug.frpc.common.cluster.LoadBalanceType;
 import com.jibug.frpc.common.codec.compress.CompressEnum;
 import com.jibug.frpc.common.codec.serialize.SerializeProtocolEnum;
 
@@ -23,6 +25,10 @@ public class RpcServiceDelegate extends RpcProxyFactoryBean implements Serializa
     private SerializeProtocolEnum protocol;
 
     private CompressEnum compress;
+
+    private HaStrategyType haStrategyType;
+
+    private LoadBalanceType loadBalanceType;
 
     private int timeout;
 
@@ -74,6 +80,22 @@ public class RpcServiceDelegate extends RpcProxyFactoryBean implements Serializa
 
     public void setCompress(CompressEnum compress) {
         this.compress = compress;
+    }
+
+    public HaStrategyType getHaStrategyType() {
+        return haStrategyType;
+    }
+
+    public void setHaStrategyType(HaStrategyType haStrategyType) {
+        this.haStrategyType = haStrategyType;
+    }
+
+    public LoadBalanceType getLoadBalanceType() {
+        return loadBalanceType;
+    }
+
+    public void setLoadBalanceType(LoadBalanceType loadBalanceType) {
+        this.loadBalanceType = loadBalanceType;
     }
 
     public int getTimeout() {

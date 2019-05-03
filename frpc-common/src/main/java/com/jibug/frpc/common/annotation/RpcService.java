@@ -1,5 +1,7 @@
 package com.jibug.frpc.common.annotation;
 
+import com.jibug.frpc.common.cluster.HaStrategyType;
+import com.jibug.frpc.common.cluster.LoadBalanceType;
 import com.jibug.frpc.common.codec.compress.CompressEnum;
 import com.jibug.frpc.common.codec.serialize.SerializeProtocolEnum;
 import com.jibug.frpc.common.constant.ConfigConsts;
@@ -61,5 +63,19 @@ public @interface RpcService {
      * @return
      */
     SerializeProtocolEnum protocol() default SerializeProtocolEnum.JDK_SERIALIZE;
+
+    /**
+     * 容错机制
+     *
+     * @return
+     */
+    HaStrategyType haStrategyType() default HaStrategyType.FAIL_FAST;
+
+    /**
+     * 负载均衡策略
+     *
+     * @return
+     */
+    LoadBalanceType loadBalanceType() default LoadBalanceType.RANDOM;
 
 }
