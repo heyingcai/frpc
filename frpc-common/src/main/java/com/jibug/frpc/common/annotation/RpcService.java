@@ -1,7 +1,7 @@
 package com.jibug.frpc.common.annotation;
 
-import com.jibug.frpc.common.cluster.HaStrategyType;
-import com.jibug.frpc.common.cluster.LoadBalanceType;
+import com.jibug.frpc.common.cluster.enums.HaStrategyType;
+import com.jibug.frpc.common.cluster.enums.LoadBalanceType;
 import com.jibug.frpc.common.codec.compress.CompressEnum;
 import com.jibug.frpc.common.codec.serialize.SerializeProtocolEnum;
 import com.jibug.frpc.common.constant.ConfigConsts;

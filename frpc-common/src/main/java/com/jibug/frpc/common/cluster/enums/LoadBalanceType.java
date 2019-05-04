@@ -1,4 +1,4 @@
-package com.jibug.frpc.common.cluster;
+package com.jibug.frpc.common.cluster.enums;
 
 /**
  * @author heyingcai
