@@ -28,7 +28,6 @@
         </license>
     </licenses>
     <modules>
-        <module>frpc-core</module>
         <module>frpc-common</module>
         <module>frpc-net</module>
         <module>frpc-boot</module>
