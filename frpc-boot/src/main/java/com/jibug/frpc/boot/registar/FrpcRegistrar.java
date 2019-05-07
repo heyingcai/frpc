@@ -3,6 +3,7 @@ package com.jibug.frpc.boot.registar;
 import com.jibug.frpc.boot.annotation.EnableFrpc;
 import com.jibug.frpc.boot.proxy.RpcMethodInterceptor;
 import com.jibug.frpc.common.annotation.RpcReference;
+import com.jibug.frpc.common.annotation.RpcService;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -68,6 +69,7 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
     public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry) {
         ClassPathScanningCandidateComponentProvider provider = componentScanner();
         provider.addIncludeFilter(new AnnotationTypeFilter(RpcReference.class));
+        provider.addIncludeFilter(new AnnotationTypeFilter(RpcService.class));
         Set<String> basePackages = resolveBasePackages(annotationMetadata);
 
         for (String basePackage : basePackages) {
@@ -125,7 +127,7 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
         AnnotationMetadata metadata = annotatedBeanDefinition.getMetadata();
         String className = metadata.getClassName();
         BeanDefinitionBuilder definition = BeanDefinitionBuilder
-                .genericBeanDefinition(RpcServiceDelegate.class);
+                .genericBeanDefinition(RpcReferenceDelegate.class);
         Map<String, Object> annotationAttributes = metadata.getAnnotationAttributes(RpcReference.class.getName());
 
         definition.addPropertyValue("serverName", annotationAttributes.get("serverName"));
