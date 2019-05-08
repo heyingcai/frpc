@@ -69,7 +69,6 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
     public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry) {
         ClassPathScanningCandidateComponentProvider provider = componentScanner();
         provider.addIncludeFilter(new AnnotationTypeFilter(RpcReference.class));
-        provider.addIncludeFilter(new AnnotationTypeFilter(RpcService.class));
         Set<String> basePackages = resolveBasePackages(annotationMetadata);
 
         for (String basePackage : basePackages) {
