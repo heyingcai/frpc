@@ -6,3 +6,6 @@
 
 >frpc是一款基于Netty的轻量级高性能分布式RPC服务框架。
 
+>frpc-boot支持springboot
+
+
