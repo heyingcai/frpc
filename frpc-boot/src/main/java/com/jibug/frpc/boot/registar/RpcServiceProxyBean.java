@@ -1,10 +1,5 @@
 package com.jibug.frpc.boot.registar;
 
-import com.jibug.frpc.common.cluster.enums.HaStrategyType;
-import com.jibug.frpc.common.cluster.enums.LoadBalanceType;
-import com.jibug.frpc.common.codec.compress.CompressEnum;
-import com.jibug.frpc.common.codec.serialize.SerializeProtocolEnum;
-
 import java.io.Serializable;
 
 /**
