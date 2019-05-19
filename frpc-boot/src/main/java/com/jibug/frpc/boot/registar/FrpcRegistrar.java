@@ -80,12 +80,12 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
                 }
             }
         }
+
+        registerRegistryConfig(registry);
     }
 
     protected ClassPathScanningCandidateComponentProvider componentScanner() {
-
         return new ClassPathScanningCandidateComponentProvider(false, this.environment) {
-
             @Override
             protected boolean isCandidateComponent(
                     AnnotatedBeanDefinition beanDefinition) {
@@ -145,6 +145,14 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
             e.printStackTrace();
         }
         BeanDefinitionHolder holder = new BeanDefinitionHolder(definition.getBeanDefinition(), className,
+                new String[]{className});
+        BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
+    }
+
+    private void registerRegistryConfig( BeanDefinitionRegistry registry) {
+        BeanDefinitionBuilder registryDefinition = BeanDefinitionBuilder.genericBeanDefinition(RegistryProxyBean.class);
+        String className = RegistryProxyBean.class.getCanonicalName();
+        BeanDefinitionHolder holder = new BeanDefinitionHolder(registryDefinition.getBeanDefinition(), className,
                 new String[]{className});
         BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
     }
