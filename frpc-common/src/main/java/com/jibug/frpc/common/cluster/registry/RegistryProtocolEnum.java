@@ -8,7 +8,8 @@ public enum RegistryProtocolEnum {
     LOCAL("local", LocalRegistry.class),
     ZOOKEEPER("zookeeper", ZookeeperRegistry.class),
     CONSUL("consul", ConsulRegistry.class),
-    EUREKA("eureka", EurekaRegistry.class);
+    EUREKA("eureka", EurekaRegistry.class),
+    REDIS("redis", RedisRegistry.class);
 
 
     private String name;

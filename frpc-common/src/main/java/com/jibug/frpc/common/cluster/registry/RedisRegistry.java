@@ -6,8 +6,7 @@ import com.jibug.frpc.common.config.RegistryConfig;
 /**
  * @author heyingcai
  */
-public class EurekaRegistry extends Registry {
-
+public class RedisRegistry extends Registry {
     @Override
     public synchronized void init() {
 

@@ -9,7 +9,7 @@ import com.jibug.frpc.common.config.RegistryConfig;
 public class LocalRegistry extends Registry{
 
     @Override
-    public void init() {
+    public synchronized void init() {
 
     }
 

@@ -6,10 +6,10 @@ import com.jibug.frpc.common.config.RegistryConfig;
 /**
  * @author heyingcai
  */
-public class ZookeeperRegistry extends Registry{
+public class ZookeeperRegistry extends Registry {
 
     @Override
-    public void init() {
+    public synchronized void init() {
 
     }
 

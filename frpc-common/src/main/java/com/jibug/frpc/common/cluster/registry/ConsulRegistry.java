@@ -6,10 +6,10 @@ import com.jibug.frpc.common.config.RegistryConfig;
 /**
  * @author heyingcai
  */
-public class ConsulRegistry extends Registry{
+public class ConsulRegistry extends Registry {
 
     @Override
-    public void init() {
+    public synchronized void init() {
 
     }
 
