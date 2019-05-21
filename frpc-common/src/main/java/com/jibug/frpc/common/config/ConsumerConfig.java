@@ -6,7 +6,7 @@ import com.jibug.frpc.common.cluster.enums.LoadBalanceType;
 /**
  * @author heyingcai
  */
-public class ConsumerConfig {
+public class ConsumerConfig<T> extends AbstractConfig{
 
     private String protocol;
 

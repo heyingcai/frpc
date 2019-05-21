@@ -1,12 +1,18 @@
 package com.jibug.frpc.common.cluster.registry;
 
 import com.jibug.frpc.common.config.ConsumerConfig;
+import com.jibug.frpc.common.config.ProviderConfig;
 import com.jibug.frpc.common.config.RegistryConfig;
 
 /**
  * @author heyingcai
  */
 public class RedisRegistry extends Registry {
+
+    protected RedisRegistry(RegistryConfig registryConfig) {
+        super(registryConfig);
+    }
+
     @Override
     public synchronized void init() {
 
@@ -18,14 +24,15 @@ public class RedisRegistry extends Registry {
     }
 
     @Override
-    public void register(RegistryConfig config) {
+    public void register(ProviderConfig config) {
 
     }
 
     @Override
-    public void unRegister(RegistryConfig config) {
+    public void unRegister(ProviderConfig config) {
 
     }
+
 
     @Override
     public void subscribe(ConsumerConfig config) {
