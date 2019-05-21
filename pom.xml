@@ -48,6 +48,7 @@
         <lzo.version>1.0.5</lzo.version>
         <lz4.version>1.2.0</lz4.version>
         <esotericsoftware.kryo.version>2.24.0</esotericsoftware.kryo.version>
+        <curator.version>2.9.1</curator.version>
     </properties>
 
 
@@ -125,6 +126,11 @@
                 <groupId>org.objenesis</groupId>
                 <artifactId>objenesis</artifactId>
                 <version>2.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-recipes</artifactId>
+                <version>${curator.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
