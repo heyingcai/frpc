@@ -13,7 +13,6 @@ public class ProviderConfig<T> {
 
     private Map<Method,MethodConfig> methodConfig = new ConcurrentHashMap<>();
 
-
     public T getReference() {
         return reference;
     }

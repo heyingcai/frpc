@@ -11,11 +11,10 @@ import java.lang.annotation.Target;
 
 /**
  * @author heyingcai
- * @date 2019-04-29 11:03
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface MethodConfig {
+public @interface RpcMethod {
 
     String methodName() default "";
 
