@@ -8,5 +8,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "frpc")
 public class FrpcProperties {
 
+    private RegistryProperties registryProperties;
 
+
+    public RegistryProperties getRegistryProperties() {
+        return registryProperties;
+    }
+
+    public void setRegistryProperties(RegistryProperties registryProperties) {
+        this.registryProperties = registryProperties;
+    }
 }
