@@ -41,6 +41,7 @@ public class ZookeeperRegistry extends Registry {
 
     @Override
     public synchronized boolean start() {
+        init();
         if (zkClient == null) {
             return false;
         }

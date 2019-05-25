@@ -17,6 +17,14 @@ public class RegistryConfig {
 
     private Map<String, String> parameters;
 
+    public RegistryConfig() {
+    }
+
+    public RegistryConfig(String protocol, String address) {
+        this.protocol = protocol;
+        this.address = address;
+    }
+
     public String getProtocol() {
         return protocol;
     }

@@ -4,6 +4,10 @@ import com.jibug.frpc.boot.annotation.EnableFrpc;
 import com.jibug.frpc.boot.proxy.RpcMethodInterceptor;
 import com.jibug.frpc.common.annotation.RpcReference;
 import com.jibug.frpc.common.annotation.RpcService;
+import com.jibug.frpc.common.cluster.registry.RegistryProtocolEnum;
+import com.jibug.frpc.common.config.RegistryConfig;
+import com.jibug.frpc.common.constant.ConfigPropertiesKey;
+import com.jibug.frpc.common.exception.FrpRuntimeException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -149,9 +153,18 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
         BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
     }
 
-    private void registerRegistryConfig( BeanDefinitionRegistry registry) {
-        BeanDefinitionBuilder registryDefinition = BeanDefinitionBuilder.genericBeanDefinition(RegistryProxyBean.class);
-        String className = RegistryProxyBean.class.getCanonicalName();
+    private void registerRegistryConfig(BeanDefinitionRegistry registry) {
+        String address = environment.getProperty(ConfigPropertiesKey.REGISTRY_ADDRESS);
+        String protocol = environment.getProperty(ConfigPropertiesKey.REGISTRY_PROTOCOL);
+        Class<?> registryClass = RegistryProtocolEnum.getClassTypeByName(protocol);
+        if (registryClass == null) {
+            throw new FrpRuntimeException("The " + protocol + " registry protocol not found, please check the properties.");
+        }
+        RegistryConfig registryConfig = new RegistryConfig(protocol,address);
+        BeanDefinitionBuilder registryDefinition = BeanDefinitionBuilder.genericBeanDefinition(registryClass);
+        String className = registryClass.getCanonicalName();
+        registryDefinition.addConstructorArgValue(registryConfig);
+        registryDefinition.setInitMethodName("start");
         BeanDefinitionHolder holder = new BeanDefinitionHolder(registryDefinition.getBeanDefinition(), className,
                 new String[]{className});
         BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);

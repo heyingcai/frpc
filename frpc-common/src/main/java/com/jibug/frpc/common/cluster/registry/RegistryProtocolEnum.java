@@ -5,10 +5,25 @@ package com.jibug.frpc.common.cluster.registry;
  */
 public enum RegistryProtocolEnum {
 
+    /**
+     * local注册中心
+     */
     LOCAL("local", LocalRegistry.class),
+    /**
+     * zookeeper注册中心
+     */
     ZOOKEEPER("zookeeper", ZookeeperRegistry.class),
+    /**
+     * consul注册中心
+     */
     CONSUL("consul", ConsulRegistry.class),
+    /**
+     * eureka注册中心
+     */
     EUREKA("eureka", EurekaRegistry.class),
+    /**
+     * redis注册中心
+     */
     REDIS("redis", RedisRegistry.class);
 
 
@@ -19,6 +34,17 @@ public enum RegistryProtocolEnum {
         this.name = name;
         this.clazz = clazz;
     }
+
+    public static Class<?> getClassTypeByName(String name) {
+        RegistryProtocolEnum[] values = RegistryProtocolEnum.values();
+        for (RegistryProtocolEnum protocolEnum : values) {
+            if (protocolEnum.getName().equalsIgnoreCase(name)) {
+                return protocolEnum.getClazz();
+            }
+        }
+        return null;
+    }
+
 
     public String getName() {
         return name;
