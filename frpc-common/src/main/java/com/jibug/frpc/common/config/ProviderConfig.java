@@ -7,11 +7,13 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author heyingcai
  */
-public class ProviderConfig<T> {
+public class ProviderConfig<T> extends AbstractConfig {
 
     private transient T reference;
 
-    private Map<Method,MethodConfig> methodConfig = new ConcurrentHashMap<>();
+    private ServerConfig serverConfig;
+
+    private Map<Method, MethodConfig> methodConfig = new ConcurrentHashMap<>();
 
     public T getReference() {
         return reference;
@@ -19,6 +21,14 @@ public class ProviderConfig<T> {
 
     public void setReference(T reference) {
         this.reference = reference;
+    }
+
+    public ServerConfig getServerConfig() {
+        return serverConfig;
+    }
+
+    public void setServerConfig(ServerConfig serverConfig) {
+        this.serverConfig = serverConfig;
     }
 
     public Map<Method, MethodConfig> getMethodConfig() {
