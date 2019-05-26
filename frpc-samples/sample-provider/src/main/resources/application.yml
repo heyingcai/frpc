@@ -1,0 +1,6 @@
+frpc:
+  registry:
+    address: localhost:2181
+    protocol: zookeeper
+  server:
+    port: 123456

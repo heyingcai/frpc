@@ -1,4 +1,4 @@
-package com.jibug.frpc.samples.controller;
+package com.jibug.frpc.samples.consumer.controller;
 
 import com.jibug.frpc.samples.api.CalculateService;
 import org.springframework.web.bind.annotation.RequestMapping;

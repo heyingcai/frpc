@@ -1,4 +1,4 @@
-package com.jibug.frpc.samples.service;
+package com.jibug.frpc.samples.provider.service;
 
 import com.jibug.frpc.common.annotation.RpcService;
 import com.jibug.frpc.samples.api.CalculateService;

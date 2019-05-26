@@ -1,0 +1,4 @@
+frpc:
+  registry:
+    address: localhost:2181
+    protocol: zookeeper
