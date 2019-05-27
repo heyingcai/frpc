@@ -1,17 +1,21 @@
 package com.jibug.frpc.common.config;
 
+import static com.jibug.frpc.common.config.RpcServerConfig.getIntValue;
+import static com.jibug.frpc.common.config.RpcServerConfig.getStringValue;
+import static com.jibug.frpc.common.constant.ConfigPropertiesKey.*;
+
 /**
  * @author heyingcai
  */
 public class ServerConfig {
 
-    private int port;
+    private int port = getIntValue(SERVER_PORT);
 
-    private String contextPath;
+    private String contextPath = getStringValue(SERVER_CONTEXT_PATH);
 
-    private int threadPoolCore;
+    private int threadPoolCore = getIntValue(SERVER_THREAD_POOL_CORE);
 
-    private int threadPoolMax;
+    private int threadPoolMax = getIntValue(SERVER_THREAD_POOL_MAX);
 
     public int getPort() {
         return port;
