@@ -2,18 +2,21 @@ package com.jibug.frpc.common.config;
 
 import java.util.Map;
 
+import static com.jibug.frpc.common.config.RpcServerConfig.getStringValue;
+import static com.jibug.frpc.common.constant.ConfigPropertiesKey.*;
+
 /**
  * @author heyingcai
  */
 public class RegistryConfig {
 
-    private String protocol;
+    private String protocol = getStringValue(REGISTRY_PROTOCOL);
 
-    private String address;
+    private String address = getStringValue(REGISTRY_ADDRESS);
 
-    private String username;
+    private String username = getStringValue(REGISTRY_USERNAME);
 
-    private String password;
+    private String password = getStringValue(REGISTRY_PASSWORD);
 
     private Map<String, String> parameters;
 
