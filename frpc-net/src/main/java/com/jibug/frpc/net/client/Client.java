@@ -9,5 +9,4 @@ public abstract class Client {
 
     public abstract void connect();
 
-    public abstract void send(RequestType requestType);
 }
