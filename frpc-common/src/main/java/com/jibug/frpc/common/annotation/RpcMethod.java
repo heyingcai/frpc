@@ -1,5 +1,6 @@
 package com.jibug.frpc.common.annotation;
 
+import com.jibug.frpc.common.cluster.enums.RequestType;
 import com.jibug.frpc.common.codec.compress.CompressEnum;
 import com.jibug.frpc.common.codec.serialize.SerializeProtocolEnum;
 import com.jibug.frpc.common.constant.ConfigConsts;
@@ -23,5 +24,7 @@ public @interface RpcMethod {
     CompressEnum compress() default CompressEnum.NONE;
 
     SerializeProtocolEnum serialze() default SerializeProtocolEnum.JDK_SERIALIZE;
+
+    RequestType callType() default RequestType.SYNC;
 
 }

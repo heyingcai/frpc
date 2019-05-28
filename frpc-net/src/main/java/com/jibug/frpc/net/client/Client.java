@@ -1,7 +1,5 @@
 package com.jibug.frpc.net.client;
 
-import com.jibug.frpc.net.request.RequestType;
-
 /**
  * @author heyingcai
  */

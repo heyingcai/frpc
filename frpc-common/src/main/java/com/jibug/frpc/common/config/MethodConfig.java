@@ -1,5 +1,6 @@
 package com.jibug.frpc.common.config;
 
+import com.jibug.frpc.common.cluster.enums.RequestType;
 import com.jibug.frpc.common.codec.compress.CompressEnum;
 import com.jibug.frpc.common.codec.serialize.SerializeProtocolEnum;
 
@@ -15,6 +16,8 @@ public class MethodConfig {
     private CompressEnum compressType;
 
     private SerializeProtocolEnum serializeProtocol;
+
+    private RequestType requestType;
 
     public String getMethodName() {
         return methodName;
@@ -46,5 +49,13 @@ public class MethodConfig {
 
     public void setSerializeProtocol(SerializeProtocolEnum serializeProtocol) {
         this.serializeProtocol = serializeProtocol;
+    }
+
+    public RequestType getRequestType() {
+        return requestType;
+    }
+
+    public void setRequestType(RequestType requestType) {
+        this.requestType = requestType;
     }
 }
