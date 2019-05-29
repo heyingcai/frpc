@@ -76,16 +76,17 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
         Set<String> basePackages = resolveBasePackages(annotationMetadata);
 
         for (String basePackage : basePackages) {
-            Set<BeanDefinition> beanDefinitions = provider.findCandidateComponents(basePackage);
-            for (BeanDefinition beanDefinition : beanDefinitions) {
-                if (beanDefinition instanceof AnnotatedBeanDefinition) {
-                    AnnotatedBeanDefinition annotatedBeanDefinition = (AnnotatedBeanDefinition) beanDefinition;
-                    registerRpcServiceProxyBean(annotatedBeanDefinition, registry);
-                }
-            }
+            registerRpcReferenceProxyBean(basePackage, getAnnotationFilterScanner(RpcReference.class), registry);
+            registerRpcService(basePackage, getAnnotationFilterScanner(RpcService.class), registry);
         }
 
         registerRegistryConfig(registry);
+    }
+
+    private ClassPathScanningCandidateComponentProvider getAnnotationFilterScanner(Class<? extends Annotation> annotationType) {
+        ClassPathScanningCandidateComponentProvider provider = componentScanner();
+        provider.addIncludeFilter(new AnnotationTypeFilter(annotationType));
+        return provider;
     }
 
     protected ClassPathScanningCandidateComponentProvider componentScanner() {
@@ -126,31 +127,54 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
         return packages;
     }
 
-    private void registerRpcServiceProxyBean(AnnotatedBeanDefinition annotatedBeanDefinition, BeanDefinitionRegistry registry) {
-        AnnotationMetadata metadata = annotatedBeanDefinition.getMetadata();
-        String className = metadata.getClassName();
-        BeanDefinitionBuilder definition = BeanDefinitionBuilder
-                .genericBeanDefinition(RpcReferenceDelegate.class);
-        Map<String, Object> annotationAttributes = metadata.getAnnotationAttributes(RpcReference.class.getName());
+    private void registerRpcReferenceProxyBean(String basePackage, ClassPathScanningCandidateComponentProvider provider, BeanDefinitionRegistry registry) {
+        registerRpcReferenceProxyBean(provider.findCandidateComponents(basePackage), registry);
+    }
 
-        definition.addPropertyValue("serverName", annotationAttributes.get("serverName"));
-        definition.addPropertyValue("host", annotationAttributes.get("host"));
-        definition.addPropertyValue("port", annotationAttributes.get("port"));
-        definition.addPropertyValue("serviceName", annotationAttributes.get("serviceName"));
-        definition.addPropertyValue("protocol", annotationAttributes.get("protocol"));
-        definition.addPropertyValue("compress", annotationAttributes.get("compress"));
-        definition.addPropertyValue("haStrategyType", annotationAttributes.get("haStrategyType"));
-        definition.addPropertyValue("loadBalanceType", annotationAttributes.get("loadBalanceType"));
-        definition.addPropertyValue("timeout", annotationAttributes.get("timeout"));
-        definition.addPropertyValue("interceptor", new RpcMethodInterceptor());
-        try {
-            definition.addPropertyValue("interfaceName", Class.forName(className));
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+    private void registerRpcReferenceProxyBean(Set<BeanDefinition> beanDefinitions, BeanDefinitionRegistry registry) {
+        for (BeanDefinition beanDefinition : beanDefinitions) {
+            if (beanDefinition instanceof AnnotatedBeanDefinition) {
+                AnnotatedBeanDefinition annotatedBeanDefinition = (AnnotatedBeanDefinition) beanDefinition;
+                AnnotationMetadata metadata = annotatedBeanDefinition.getMetadata();
+                String className = metadata.getClassName();
+                BeanDefinitionBuilder definition = BeanDefinitionBuilder
+                        .genericBeanDefinition(RpcReferenceDelegate.class);
+                Map<String, Object> annotationAttributes = metadata.getAnnotationAttributes(RpcReference.class.getName());
+
+                definition.addPropertyValue("serverName", annotationAttributes.get("serverName"));
+                definition.addPropertyValue("host", annotationAttributes.get("host"));
+                definition.addPropertyValue("port", annotationAttributes.get("port"));
+                definition.addPropertyValue("serviceName", annotationAttributes.get("serviceName"));
+                definition.addPropertyValue("protocol", annotationAttributes.get("protocol"));
+                definition.addPropertyValue("compress", annotationAttributes.get("compress"));
+                definition.addPropertyValue("haStrategyType", annotationAttributes.get("haStrategyType"));
+                definition.addPropertyValue("loadBalanceType", annotationAttributes.get("loadBalanceType"));
+                definition.addPropertyValue("timeout", annotationAttributes.get("timeout"));
+                definition.addPropertyValue("interceptor", new RpcMethodInterceptor());
+                try {
+                    definition.addPropertyValue("interfaceName", Class.forName(className));
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                BeanDefinitionHolder holder = new BeanDefinitionHolder(definition.getBeanDefinition(), className,
+                        new String[]{className});
+                BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
+            }
         }
-        BeanDefinitionHolder holder = new BeanDefinitionHolder(definition.getBeanDefinition(), className,
-                new String[]{className});
-        BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
+    }
+
+    private void registerRpcService(String basePackage, ClassPathScanningCandidateComponentProvider provider, BeanDefinitionRegistry registry) {
+        registerRpcService(provider.findCandidateComponents(basePackage), registry);
+    }
+
+    private void registerRpcService(Set<BeanDefinition> beanDefinitions, BeanDefinitionRegistry registry) {
+        for (BeanDefinition beanDefinition : beanDefinitions) {
+            if (beanDefinition instanceof AnnotatedBeanDefinition) {
+                AnnotatedBeanDefinition annotatedBeanDefinition = (AnnotatedBeanDefinition) beanDefinition;
+                AnnotationMetadata metadata = annotatedBeanDefinition.getMetadata();
+                String superClassName = metadata.getSuperClassName();
+            }
+        }
     }
 
     private void registerRegistryConfig(BeanDefinitionRegistry registry) {
@@ -160,7 +184,7 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
         if (registryClass == null) {
             throw new FrpRuntimeException("The " + protocol + " registry protocol not found, please check the properties.");
         }
-        RegistryConfig registryConfig = new RegistryConfig(protocol,address);
+        RegistryConfig registryConfig = new RegistryConfig(protocol, address);
         BeanDefinitionBuilder registryDefinition = BeanDefinitionBuilder.genericBeanDefinition(registryClass);
         String className = registryClass.getCanonicalName();
         registryDefinition.addConstructorArgValue(registryConfig);
