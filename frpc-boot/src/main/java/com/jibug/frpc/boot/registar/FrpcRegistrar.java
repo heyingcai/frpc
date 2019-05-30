@@ -2,7 +2,7 @@ package com.jibug.frpc.boot.registar;
 
 import com.jibug.frpc.boot.annotation.EnableFrpc;
 import com.jibug.frpc.boot.proxy.RpcMethodInterceptor;
-import com.jibug.frpc.common.annotation.RpcReference;
+import com.jibug.frpc.common.annotation.RpcInterface;
 import com.jibug.frpc.common.annotation.RpcService;
 import com.jibug.frpc.common.cluster.registry.RegistryProtocolEnum;
 import com.jibug.frpc.common.config.RegistryConfig;
@@ -72,11 +72,11 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
     @Override
     public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry) {
         ClassPathScanningCandidateComponentProvider provider = componentScanner();
-        provider.addIncludeFilter(new AnnotationTypeFilter(RpcReference.class));
+        provider.addIncludeFilter(new AnnotationTypeFilter(RpcInterface.class));
         Set<String> basePackages = resolveBasePackages(annotationMetadata);
 
         for (String basePackage : basePackages) {
-            registerRpcReferenceProxyBean(basePackage, getAnnotationFilterScanner(RpcReference.class), registry);
+            registerRpcReferenceProxyBean(basePackage, getAnnotationFilterScanner(RpcInterface.class), registry);
             registerRpcService(basePackage, getAnnotationFilterScanner(RpcService.class), registry);
         }
 
@@ -139,7 +139,7 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
                 String className = metadata.getClassName();
                 BeanDefinitionBuilder definition = BeanDefinitionBuilder
                         .genericBeanDefinition(RpcReferenceDelegate.class);
-                Map<String, Object> annotationAttributes = metadata.getAnnotationAttributes(RpcReference.class.getName());
+                Map<String, Object> annotationAttributes = metadata.getAnnotationAttributes(RpcInterface.class.getName());
 
                 definition.addPropertyValue("serverName", annotationAttributes.get("serverName"));
                 definition.addPropertyValue("host", annotationAttributes.get("host"));
