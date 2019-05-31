@@ -1,10 +1,9 @@
 package com.jibug.frpc.samples.consumer.controller;
 
+import com.jibug.frpc.common.annotation.RpcReference;
 import com.jibug.frpc.samples.api.CalculateService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 /**
  * @author heyingcai
@@ -12,7 +11,7 @@ import javax.annotation.Resource;
 @RestController
 public class TestController {
 
-    @Resource
+    @RpcReference
     private CalculateService calculateService;
 
     @RequestMapping(value = "/sum")

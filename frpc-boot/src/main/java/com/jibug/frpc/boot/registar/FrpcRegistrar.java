@@ -77,7 +77,7 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
 
         for (String basePackage : basePackages) {
             registerRpcReferenceProxyBean(basePackage, getAnnotationFilterScanner(RpcInterface.class), registry);
-            registerRpcService(basePackage, getAnnotationFilterScanner(RpcService.class), registry);
+//            registerRpcService(basePackage, getAnnotationFilterScanner(RpcService.class), registry);
         }
 
         registerRegistryConfig(registry);

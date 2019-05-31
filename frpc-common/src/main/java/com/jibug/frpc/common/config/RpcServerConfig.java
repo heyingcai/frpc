@@ -21,7 +21,7 @@ public class RpcServerConfig {
     }
 
     private static void init() {
-        InputStream inputStream = RegistryConfig.class.getResourceAsStream("frpc-server.properties");
+        InputStream inputStream = RegistryConfig.class.getClassLoader().getResourceAsStream("frpc-server.properties");
         Properties properties = new Properties();
         try {
             properties.load(inputStream);
