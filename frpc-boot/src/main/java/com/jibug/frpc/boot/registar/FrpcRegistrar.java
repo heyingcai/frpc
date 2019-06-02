@@ -65,14 +65,24 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry) {
-        registerRegistryConfig(registry);
         registerRpcReferenceAnnotationBeanPostProcessor(registry);
+        registerResolveRpcServiceAnnotationBean(registry);
     }
 
     private void registerRpcReferenceAnnotationBeanPostProcessor(BeanDefinitionRegistry registry) {
         BeanDefinitionBuilder definition = BeanDefinitionBuilder.genericBeanDefinition(RpcReferenceAnnotationBeanPostProcessor.class);
         BeanDefinitionHolder holder = new BeanDefinitionHolder(definition.getBeanDefinition(), RpcReferenceAnnotationBeanPostProcessor.BEAN_NAME,
                 new String[]{RpcReferenceAnnotationBeanPostProcessor.BEAN_NAME});
+        BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
+    }
+
+    private void registerResolveRpcServiceAnnotationBean(BeanDefinitionRegistry registry) {
+        BeanDefinitionBuilder definition = BeanDefinitionBuilder.genericBeanDefinition(RpcServiceProxyBean.class);
+        BeanDefinitionHolder holder = new BeanDefinitionHolder(definition.getBeanDefinition(), RpcServiceProxyBean.BEAN_NAME,
+                new String[]{RpcServiceProxyBean.BEAN_NAME});
+
+        definition.addPropertyValue("registryConfig", registerRegistryConfig(registry));
+        definition.setInitMethodName("start");
         BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
     }
 
@@ -84,14 +94,13 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
         for (String basePackage : basePackages) {
             packages.add(basePackage);
         }
-
         if (packages.isEmpty()) {
             packages.add(ClassUtils.getPackageName(annotationMetadata.getClassName()));
         }
         return packages;
     }
 
-    private void registerRegistryConfig(BeanDefinitionRegistry registry) {
+    private RegistryConfig registerRegistryConfig(BeanDefinitionRegistry registry) {
         String address = environment.getProperty(ConfigPropertiesKey.REGISTRY_ADDRESS);
         String protocol = environment.getProperty(ConfigPropertiesKey.REGISTRY_PROTOCOL);
         Class<?> registryClass = RegistryProtocolEnum.getClassTypeByName(protocol);
@@ -105,6 +114,7 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
         BeanDefinitionHolder holder = new BeanDefinitionHolder(registryDefinition.getBeanDefinition(), REGISTRY_CENTER,
                 new String[]{REGISTRY_CENTER});
         BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
+        return registryConfig;
     }
 
     @Override
