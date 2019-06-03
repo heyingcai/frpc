@@ -1,19 +1,29 @@
 package com.jibug.frpc.boot.config;
 
+import static com.jibug.frpc.common.config.RpcServerConfig.getStringValue;
+import static com.jibug.frpc.common.constant.ConfigPropertiesKey.*;
+
 /**
  * @author heyingcai
  */
 public class RegistryProperties {
 
-    private String protocol;
+    private String protocol = getStringValue(REGISTRY_PROTOCOL);
 
-    private String address;
+    private String address = getStringValue(REGISTRY_ADDRESS);
 
-    private String username;
+    private String username = getStringValue(REGISTRY_USERNAME);
 
-    private String password;
+    private String password = getStringValue(REGISTRY_PASSWORD);
 
     public RegistryProperties() {
+    }
+
+    public RegistryProperties(String protocol, String address, String username, String password) {
+        this.protocol = protocol;
+        this.address = address;
+        this.username = username;
+        this.password = password;
     }
 
     public RegistryProperties(String protocol, String address) {

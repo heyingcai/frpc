@@ -10,6 +10,7 @@ public class FrpcProperties {
 
     private RegistryProperties registryProperties;
 
+    private ServerProperties serverProperties;
 
     public RegistryProperties getRegistryProperties() {
         return registryProperties;
@@ -17,5 +18,13 @@ public class FrpcProperties {
 
     public void setRegistryProperties(RegistryProperties registryProperties) {
         this.registryProperties = registryProperties;
+    }
+
+    public ServerProperties getServerProperties() {
+        return serverProperties;
+    }
+
+    public void setServerProperties(ServerProperties serverProperties) {
+        this.serverProperties = serverProperties;
     }
 }

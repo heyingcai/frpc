@@ -3,6 +3,7 @@ package com.jibug.frpc.boot.registar;
 import com.jibug.frpc.boot.annotation.EnableFrpc;
 import com.jibug.frpc.common.cluster.registry.RegistryProtocolEnum;
 import com.jibug.frpc.common.config.RegistryConfig;
+import com.jibug.frpc.common.config.ServerConfig;
 import com.jibug.frpc.common.constant.ConfigPropertiesKey;
 import com.jibug.frpc.common.exception.FrpRuntimeException;
 import org.springframework.beans.factory.BeanClassLoaderAware;

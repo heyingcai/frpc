@@ -9,13 +9,17 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.imps.CuratorFrameworkState;
 import org.apache.curator.retry.ExponentialBackoffRetry;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 /**
  * @author heyingcai
  */
-public class ZookeeperRegistry extends Registry {
+public class ZookeeperRegistry extends Registry implements ApplicationContextAware {
 
     private CuratorFramework zkClient;
+    private ApplicationContext applicationContext;
 
     protected ZookeeperRegistry(RegistryConfig registryConfig) {
         super(registryConfig);
@@ -75,5 +79,10 @@ public class ZookeeperRegistry extends Registry {
     @Override
     public void unSubscribe(ConsumerConfig config) {
 
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }
