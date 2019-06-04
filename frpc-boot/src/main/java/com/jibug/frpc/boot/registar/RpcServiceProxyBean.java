@@ -1,7 +1,10 @@
 package com.jibug.frpc.boot.registar;
 
+import com.jibug.frpc.common.annotation.RpcInterface;
 import com.jibug.frpc.common.annotation.RpcService;
+import com.jibug.frpc.common.config.ProviderConfig;
 import com.jibug.frpc.common.config.RegistryConfig;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -35,6 +38,20 @@ public class RpcServiceProxyBean implements Serializable, ApplicationContextAwar
         String[] beanNamesForAnnotation = applicationContext.getBeanNamesForAnnotation(RpcService.class);
         for (String beanName : beanNamesForAnnotation) {
             Object bean = applicationContext.getBean(beanName);
+
+
+            Class<?>[] interfaces = bean.getClass().getInterfaces();
+            for (Class<?> interfazz :interfaces) {
+                RpcInterface rpcInterface = interfazz.getAnnotation(RpcInterface.class);
+                if (rpcInterface == null) {
+                    continue;
+                }
+
+                ProviderConfig providerConfig = new ProviderConfig();
+                providerConfig.setInterfaceId(StringUtils.isBlank(rpcInterface.serviceName()) ? interfazz.getSimpleName() : rpcInterface.serviceName());
+
+
+            }
 
             Method[] methods = bean.getClass().getMethods();
 
