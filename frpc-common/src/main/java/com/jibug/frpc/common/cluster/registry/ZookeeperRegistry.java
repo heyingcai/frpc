@@ -13,6 +13,10 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 /**
  * @author heyingcai
  */
@@ -24,6 +28,8 @@ public class ZookeeperRegistry extends Registry implements ApplicationContextAwa
     protected ZookeeperRegistry(RegistryConfig registryConfig) {
         super(registryConfig);
     }
+
+    private ConcurrentMap<ProviderConfig, List<String>> providerUrls = new ConcurrentHashMap<>();
 
 
     @Override
@@ -84,5 +90,14 @@ public class ZookeeperRegistry extends Registry implements ApplicationContextAwa
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
+    }
+
+    protected void registerProviderUrl(ProviderConfig config) {
+        try {
+
+        } catch (Exception e) {
+
+        }
+
     }
 }
