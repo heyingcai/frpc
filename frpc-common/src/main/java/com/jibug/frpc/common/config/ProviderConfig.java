@@ -1,9 +1,5 @@
 package com.jibug.frpc.common.config;
 
-import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 /**
  * @author heyingcai
  */
@@ -13,7 +9,7 @@ public class ProviderConfig<T> extends AbstractConfig {
 
     private ServerConfig serverConfig;
 
-    private Map<Method, MethodConfig> methodConfig = new ConcurrentHashMap<>();
+    private ServiceConfig serviceConfig;
 
     public T getReference() {
         return reference;
@@ -31,11 +27,11 @@ public class ProviderConfig<T> extends AbstractConfig {
         this.serverConfig = serverConfig;
     }
 
-    public Map<Method, MethodConfig> getMethodConfig() {
-        return methodConfig;
+    public ServiceConfig getServiceConfig() {
+        return serviceConfig;
     }
 
-    public void setMethodConfig(Map<Method, MethodConfig> methodConfig) {
-        this.methodConfig = methodConfig;
+    public void setServiceConfig(ServiceConfig serviceConfig) {
+        this.serviceConfig = serviceConfig;
     }
 }
