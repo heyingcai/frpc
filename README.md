@@ -61,6 +61,27 @@ frpc:
 
 ```
 
+Client端
+启动类配置如下：
+```
+@SpringBootApplication
+//启用Frpc框架，并指定扫描路径
+@EnableFrpc(basePackages = "com.jibug")
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run( Application.class, args );
+    }
+}
+
+
+```
+在需要引用服务的地方使用@RpcReference注解进行注入
+```
+    @RpcReference
+    private CalculateService calculateService;
+```
+
 
 
 
