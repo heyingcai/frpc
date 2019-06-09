@@ -39,6 +39,7 @@ public interface CalculateService {
 
 ```
 同时编写对应的实现类：
+使用@RpcService注解标注在实现类上
 ```
 @RpcService
 public class CalculateServiceImpl implements CalculateService {
