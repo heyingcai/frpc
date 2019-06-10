@@ -13,7 +13,7 @@
 * 支持负载均衡，服务可用性配置。
 
 ## 快速开始
-Server端
+### Server端
 启动类配置如下：
 ```
 @SpringBootApplication
@@ -62,7 +62,7 @@ frpc:
 
 ```
 
-Client端
+### Client端
 启动类配置如下：
 ```
 @SpringBootApplication
