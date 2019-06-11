@@ -5,6 +5,7 @@ import com.jibug.frpc.common.annotation.RpcService;
 import com.jibug.frpc.common.cluster.registry.Registry;
 import com.jibug.frpc.common.config.ProviderConfig;
 import com.jibug.frpc.common.config.RegistryConfig;
+import com.jibug.frpc.common.config.ServiceConfig;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -48,6 +49,21 @@ public class RpcServiceProxyBean implements Serializable, InitializingBean, Appl
                 RpcInterface rpcInterface = interfazz.getAnnotation(RpcInterface.class);
                 if (rpcInterface == null) {
                     continue;
+                }
+
+                ServiceConfig serviceConfig = new ServiceConfig();
+                serviceConfig.setCompressEnum(rpcInterface.compress());
+                serviceConfig.setHaStrategyType(rpcInterface.haStrategyType());
+                serviceConfig.setLoadBalanceType(rpcInterface.loadBalanceType());
+                serviceConfig.setHost(rpcInterface.host());
+                serviceConfig.setPort(rpcInterface.port());
+                serviceConfig.setProtocolEnum(rpcInterface.protocol());
+                serviceConfig.setServerName(rpcInterface.serverName());
+                serviceConfig.setServiceName(rpcInterface.serviceName());
+                serviceConfig.setTimeout(rpcInterface.timeout());
+
+                for (Method method : interfazz.getMethods()) {
+
                 }
 
                 ProviderConfig providerConfig = new ProviderConfig();
