@@ -8,6 +8,7 @@
 
 ## 功能介绍
 * 支持Springboot主流框架，使用约定大于配置原则，便捷高效地开发分布式应用。
+* 支持主流注册中心，如:Zookeeper,Consul,Eureka。
 * 支持主流常用的序列化方式，如：fastjson，hession，kryo。
 * 支持数据包压缩方式，如：Snappy,Lz4等。
 * 支持负载均衡，服务可用性配置。
