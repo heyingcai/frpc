@@ -112,4 +112,8 @@ public class ServiceConfig {
     public void setMethodConfigMap(Map<String, MethodConfig> methodConfigMap) {
         this.methodConfigMap = methodConfigMap;
     }
+
+    public void registerMethodConfig(String methodName, MethodConfig methodConfig) {
+        this.methodConfigMap.put(methodName,methodConfig);
+    }
 }

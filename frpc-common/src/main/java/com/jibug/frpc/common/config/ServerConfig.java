@@ -17,6 +17,13 @@ public class ServerConfig {
 
     private int threadPoolMax = getIntValue(SERVER_THREAD_POOL_MAX);
 
+    public ServerConfig(int port, String contextPath, int threadPoolCore, int threadPoolMax) {
+        this.port = port;
+        this.contextPath = contextPath;
+        this.threadPoolCore = threadPoolCore;
+        this.threadPoolMax = threadPoolMax;
+    }
+
     public int getPort() {
         return port;
     }

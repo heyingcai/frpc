@@ -26,6 +26,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static com.jibug.frpc.common.config.RpcServerConfig.getIntValue;
+import static com.jibug.frpc.common.config.RpcServerConfig.getStringValue;
+import static com.jibug.frpc.common.constant.ConfigPropertiesKey.*;
+
 /**
  * @author heyingcai
  */
@@ -83,6 +87,7 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
                 new String[]{RpcServiceProxyBean.BEAN_NAME});
 
         definition.addPropertyValue("registryConfig", registerRegistryConfig(registry));
+        definition.addPropertyValue("serverConfig", resolveServerConfig());
         definition.setInitMethodName("start");
         BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
     }
@@ -116,6 +121,15 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
                 new String[]{REGISTRY_CENTER});
         BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
         return registryConfig;
+    }
+
+    private ServerConfig resolveServerConfig() {
+        Integer port = Integer.valueOf(environment.getProperty(SERVER_PORT, String.valueOf(getIntValue(SERVER_PORT))));
+        String contextPath = environment.getProperty(SERVER_CONTEXT_PATH, getStringValue(SERVER_CONTEXT_PATH));
+        Integer threadPoolCore = Integer.valueOf(environment.getProperty(SERVER_THREAD_POOL_CORE, String.valueOf(getIntValue(SERVER_THREAD_POOL_CORE))));
+        Integer threadPoolMax = Integer.valueOf(environment.getProperty(SERVER_THREAD_POOL_MAX, String.valueOf(getIntValue(SERVER_THREAD_POOL_MAX))));
+        return new ServerConfig(port, contextPath, threadPoolCore, threadPoolMax);
+
     }
 
     @Override

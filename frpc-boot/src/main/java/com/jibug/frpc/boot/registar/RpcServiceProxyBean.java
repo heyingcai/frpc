@@ -1,11 +1,10 @@
 package com.jibug.frpc.boot.registar;
 
 import com.jibug.frpc.common.annotation.RpcInterface;
+import com.jibug.frpc.common.annotation.RpcMethod;
 import com.jibug.frpc.common.annotation.RpcService;
 import com.jibug.frpc.common.cluster.registry.Registry;
-import com.jibug.frpc.common.config.ProviderConfig;
-import com.jibug.frpc.common.config.RegistryConfig;
-import com.jibug.frpc.common.config.ServiceConfig;
+import com.jibug.frpc.common.config.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -29,6 +28,8 @@ public class RpcServiceProxyBean implements Serializable, InitializingBean, Appl
     private RegistryConfig registryConfig;
 
     private Registry registry;
+
+    private ServerConfig serverConfig;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -63,11 +64,25 @@ public class RpcServiceProxyBean implements Serializable, InitializingBean, Appl
                 serviceConfig.setTimeout(rpcInterface.timeout());
 
                 for (Method method : interfazz.getMethods()) {
+                    RpcMethod rpcMethod = method.getAnnotation(RpcMethod.class);
+                    if (rpcMethod != null) {
+                        String methodName = StringUtils.isBlank(rpcMethod.methodName()) ? method.getName() : rpcMethod.methodName();
+                        MethodConfig methodConfig = new MethodConfig();
 
+                        methodConfig.setMethodName(methodName);
+                        methodConfig.setCompressType(rpcMethod.compress());
+                        methodConfig.setRequestType(rpcMethod.callType());
+                        methodConfig.setSerializeProtocol(rpcMethod.serialze());
+                        methodConfig.setTimeout(rpcMethod.timeout());
+
+                        serviceConfig.registerMethodConfig(methodName,methodConfig);
+                    }
                 }
 
                 ProviderConfig providerConfig = new ProviderConfig();
                 providerConfig.setInterfaceId(StringUtils.isBlank(rpcInterface.serviceName()) ? interfazz.getSimpleName() : rpcInterface.serviceName());
+                providerConfig.setServiceConfig(serviceConfig);
+                providerConfig.setServerConfig(getServerConfig());
                 registry.register(providerConfig);
             }
 
@@ -87,6 +102,14 @@ public class RpcServiceProxyBean implements Serializable, InitializingBean, Appl
 
     public void setRegistryConfig(RegistryConfig registryConfig) {
         this.registryConfig = registryConfig;
+    }
+
+    public ServerConfig getServerConfig() {
+        return serverConfig;
+    }
+
+    public void setServerConfig(ServerConfig serverConfig) {
+        this.serverConfig = serverConfig;
     }
 
     @Override
