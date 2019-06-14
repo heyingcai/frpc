@@ -45,54 +45,10 @@ public class RpcServiceProxyBean implements Serializable, InitializingBean, Appl
         for (String beanName : beanNamesForAnnotation) {
             Object bean = applicationContext.getBean(beanName);
 
-            Class<?>[] interfaces = bean.getClass().getInterfaces();
-            for (Class<?> interfazz : interfaces) {
-                RpcInterface rpcInterface = interfazz.getAnnotation(RpcInterface.class);
-                if (rpcInterface == null) {
-                    continue;
-                }
+            ProviderConfig providerConfig = new ProviderConfig();
+            providerConfig.setInterfaceId(bean.getClass().getSimpleName());
 
-                ServiceConfig serviceConfig = new ServiceConfig();
-                serviceConfig.setCompressEnum(rpcInterface.compress());
-                serviceConfig.setHaStrategyType(rpcInterface.haStrategyType());
-                serviceConfig.setLoadBalanceType(rpcInterface.loadBalanceType());
-                serviceConfig.setHost(rpcInterface.host());
-                serviceConfig.setPort(rpcInterface.port());
-                serviceConfig.setProtocolEnum(rpcInterface.protocol());
-                serviceConfig.setServerName(rpcInterface.serverName());
-                serviceConfig.setServiceName(rpcInterface.serviceName());
-                serviceConfig.setTimeout(rpcInterface.timeout());
-
-                for (Method method : interfazz.getMethods()) {
-                    RpcMethod rpcMethod = method.getAnnotation(RpcMethod.class);
-                    if (rpcMethod != null) {
-                        String methodName = StringUtils.isBlank(rpcMethod.methodName()) ? method.getName() : rpcMethod.methodName();
-                        MethodConfig methodConfig = new MethodConfig();
-
-                        methodConfig.setMethodName(methodName);
-                        methodConfig.setCompressType(rpcMethod.compress());
-                        methodConfig.setRequestType(rpcMethod.callType());
-                        methodConfig.setSerializeProtocol(rpcMethod.serialze());
-                        methodConfig.setTimeout(rpcMethod.timeout());
-
-                        serviceConfig.registerMethodConfig(methodName,methodConfig);
-                    }
-                }
-
-                ProviderConfig providerConfig = new ProviderConfig();
-                providerConfig.setInterfaceId(StringUtils.isBlank(rpcInterface.serviceName()) ? interfazz.getSimpleName() : rpcInterface.serviceName());
-                providerConfig.setServiceConfig(serviceConfig);
-                providerConfig.setServerConfig(getServerConfig());
-                registry.register(providerConfig);
-            }
-
-            Method[] methods = bean.getClass().getMethods();
-
-            for (Method method : methods) {
-
-            }
-
-
+            registry.register(providerConfig);
         }
     }
 

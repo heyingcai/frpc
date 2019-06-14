@@ -20,7 +20,7 @@ public @interface RpcInterface {
      *
      * @return
      */
-    String serverName();
+    String serverName() default "";
 
     /**
      * host 用于直连
