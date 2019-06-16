@@ -8,6 +8,6 @@ import com.jibug.frpc.common.model.FrpcRequest;
  */
 public abstract class AbstractLoadBalancer {
 
-    protected abstract String select(FrpcRequest request, Registry registry);
+    public abstract String select(FrpcRequest request, Registry registry);
 
 }

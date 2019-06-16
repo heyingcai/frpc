@@ -1,5 +1,7 @@
 package com.jibug.frpc.common.model;
 
+import com.jibug.frpc.common.util.SnowflakeIdWorker;
+
 import java.io.Serializable;
 
 /**
@@ -18,6 +20,11 @@ public class FrpcRequest implements Serializable {
     private String className;
 
     /**
+     * 服务名
+     */
+    private String serviceName;
+
+    /**
      * 请求的具体的方法名
      */
     private String methodName;
@@ -31,6 +38,18 @@ public class FrpcRequest implements Serializable {
      * 请求的参数
      */
     private Object[] parameters;
+
+    public FrpcRequest() {
+        this.requestId = String.valueOf(SnowflakeIdWorker.getInstance().nextId());
+    }
+
+    public FrpcRequest(String className,String serviceName, String methodName, Class<?>[] parameterTypes, Object[] parameters) {
+        this.className = className;
+        this.serviceName = serviceName;
+        this.methodName = methodName;
+        this.parameterTypes = parameterTypes;
+        this.parameters = parameters;
+    }
 
     public String getRequestId() {
         return requestId;
@@ -46,6 +65,14 @@ public class FrpcRequest implements Serializable {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 
     public String getMethodName() {
