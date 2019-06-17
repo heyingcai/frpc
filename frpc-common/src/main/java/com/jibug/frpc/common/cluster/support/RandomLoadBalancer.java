@@ -8,7 +8,7 @@ import com.jibug.frpc.common.model.FrpcRequest;
  */
 public class RandomLoadBalancer extends AbstractLoadBalancer {
     @Override
-    protected String select(FrpcRequest request, Registry registry) {
+    public String select(FrpcRequest request, Registry registry) {
         return null;
     }
 }

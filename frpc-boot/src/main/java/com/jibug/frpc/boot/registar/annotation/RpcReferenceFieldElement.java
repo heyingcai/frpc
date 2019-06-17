@@ -74,7 +74,7 @@ public class RpcReferenceFieldElement extends InjectionMetadata.InjectedElement 
 
         ProxyFactory proxyFactory = new ProxyFactory();
         proxyFactory.addInterface(referenceClass);
-        proxyFactory.addAdvice(new RpcMethodInterceptor(serviceConfig));
+        proxyFactory.addAdvice(new RpcMethodInterceptor(serviceConfig,registry));
         proxyFactory.setOptimize(false);
         Object proxy = proxyFactory.getProxy();
         ReflectionUtils.makeAccessible(field);
