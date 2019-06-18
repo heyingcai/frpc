@@ -6,7 +6,6 @@ import com.jibug.frpc.common.annotation.RpcMethod;
 import com.jibug.frpc.common.annotation.RpcReference;
 import com.jibug.frpc.common.cluster.registry.Registry;
 import com.jibug.frpc.common.config.MethodConfig;
-import com.jibug.frpc.common.config.ProviderConfig;
 import com.jibug.frpc.common.config.ServiceConfig;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.aop.framework.ProxyFactory;

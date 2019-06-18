@@ -8,7 +8,7 @@ import com.jibug.frpc.common.cluster.support.RandomLoadBalancer;
 import com.jibug.frpc.common.cluster.support.RoundRobinLoadBalancer;
 import com.jibug.frpc.common.config.MethodConfig;
 import com.jibug.frpc.common.config.ServiceConfig;
-import com.jibug.frpc.common.model.FrpcRequest;
+import com.jibug.frpc.common.model.FrpcRequestBody;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
@@ -66,7 +66,7 @@ public class RpcMethodInterceptor implements MethodInterceptor {
         }
 
 
-        loadBalancer.select(new FrpcRequest(method.getDeclaringClass().getName(), serviceConfig.getServiceName(), methodName, method.getParameterTypes(), arguments), registry);
+        loadBalancer.select(new FrpcRequestBody(method.getDeclaringClass().getName(), serviceConfig.getServiceName(), methodName, method.getParameterTypes(), arguments), registry);
         return null;
     }
 }
