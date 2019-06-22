@@ -10,11 +10,6 @@ import java.io.Serializable;
 public class FrpcRequestBody implements Serializable {
 
     /**
-     * 请求消息id
-     */
-    private String requestId;
-
-    /**
      * 请求的具体的类名，接口名
      */
     private String className;
@@ -40,7 +35,6 @@ public class FrpcRequestBody implements Serializable {
     private Object[] parameters;
 
     public FrpcRequestBody() {
-        this.requestId = String.valueOf(SnowflakeIdWorker.getInstance().nextId());
     }
 
     public FrpcRequestBody(String className, String serviceName, String methodName, Class<?>[] parameterTypes, Object[] parameters) {
@@ -51,13 +45,7 @@ public class FrpcRequestBody implements Serializable {
         this.parameters = parameters;
     }
 
-    public String getRequestId() {
-        return requestId;
-    }
 
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
-    }
 
     public String getClassName() {
         return className;

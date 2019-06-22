@@ -51,7 +51,6 @@ public class RpcMethodInterceptor implements MethodInterceptor {
                 loadBalancer = new RandomLoadBalancer();
                 break;
         }
-
     }
 
     @Override

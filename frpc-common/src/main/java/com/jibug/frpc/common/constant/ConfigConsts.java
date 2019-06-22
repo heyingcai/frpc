@@ -6,6 +6,10 @@ package com.jibug.frpc.common.constant;
  */
 public class ConfigConsts {
 
+    public static final byte PROTOCOL_CODE = (byte) 1;
+
+    public static final byte PROTOCOL_VERSION = (byte) 1;
+
     public static final int DEFAULT_TIMEOUT = 4000;
 
     public static final int DEFAULT_SERVER_PORT = 9988;
