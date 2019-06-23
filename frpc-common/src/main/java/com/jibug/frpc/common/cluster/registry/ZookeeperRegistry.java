@@ -78,8 +78,8 @@ public class ZookeeperRegistry extends Registry implements ApplicationContextAwa
 
 
     @Override
-    public void subscribe(ConsumerConfig config) {
-
+    public List<ProviderInfo> subscribe(ConsumerConfig config) {
+        return null;
     }
 
     @Override

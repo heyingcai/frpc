@@ -4,6 +4,8 @@ import com.jibug.frpc.common.config.ConsumerConfig;
 import com.jibug.frpc.common.config.ProviderConfig;
 import com.jibug.frpc.common.config.RegistryConfig;
 
+import java.util.List;
+
 /**
  * @author heyingcai
  */
@@ -23,7 +25,7 @@ public abstract class Registry {
 
     public abstract void unRegister(ProviderConfig config);
 
-    public abstract void subscribe(ConsumerConfig config);
+    public abstract List<ProviderInfo> subscribe(ConsumerConfig config);
 
     public abstract void unSubscribe(ConsumerConfig config);
 

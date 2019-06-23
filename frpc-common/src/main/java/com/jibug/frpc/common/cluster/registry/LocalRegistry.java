@@ -4,6 +4,8 @@ import com.jibug.frpc.common.config.ConsumerConfig;
 import com.jibug.frpc.common.config.ProviderConfig;
 import com.jibug.frpc.common.config.RegistryConfig;
 
+import java.util.List;
+
 /**
  * @author heyingcai
  */
@@ -35,8 +37,8 @@ public class LocalRegistry extends Registry{
 
 
     @Override
-    public void subscribe(ConsumerConfig config) {
-
+    public List<ProviderInfo> subscribe(ConsumerConfig config) {
+        return null;
     }
 
     @Override
