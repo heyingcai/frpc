@@ -1,8 +1,5 @@
 package com.jibug.frpc.common.config;
 
-import com.jibug.frpc.common.cluster.enums.HaStrategyType;
-import com.jibug.frpc.common.cluster.enums.LoadBalanceType;
-
 /**
  * @author heyingcai
  */
@@ -13,10 +10,6 @@ public class ConsumerConfig<T> extends AbstractConfig {
     private String directAddr;
 
     private int connectTimeout;
-
-    private HaStrategyType haStrategyType;
-
-    private LoadBalanceType loadBalanceType;
 
     public String getProtocol() {
         return protocol;
@@ -42,19 +35,4 @@ public class ConsumerConfig<T> extends AbstractConfig {
         this.connectTimeout = connectTimeout;
     }
 
-    public HaStrategyType getHaStrategyType() {
-        return haStrategyType;
-    }
-
-    public void setHaStrategyType(HaStrategyType haStrategyType) {
-        this.haStrategyType = haStrategyType;
-    }
-
-    public LoadBalanceType getLoadBalanceType() {
-        return loadBalanceType;
-    }
-
-    public void setLoadBalanceType(LoadBalanceType loadBalanceType) {
-        this.loadBalanceType = loadBalanceType;
-    }
 }
