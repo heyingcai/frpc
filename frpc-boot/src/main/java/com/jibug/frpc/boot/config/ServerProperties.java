@@ -9,6 +9,8 @@ import static com.jibug.frpc.common.constant.ConfigPropertiesKey.*;
  */
 public class ServerProperties {
 
+    private String host = getStringValue(SERVER_HOST);
+
     private int port = getIntValue(SERVER_PORT);
 
     private String contextPath = getStringValue(SERVER_CONTEXT_PATH);
@@ -20,11 +22,20 @@ public class ServerProperties {
     public ServerProperties() {
     }
 
-    public ServerProperties(int port, String contextPath, int threadPoolCore, int threadPoolMax) {
+    public ServerProperties(String host, int port, String contextPath, int threadPoolCore, int threadPoolMax) {
+        this.host = host;
         this.port = port;
         this.contextPath = contextPath;
         this.threadPoolCore = threadPoolCore;
         this.threadPoolMax = threadPoolMax;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
     }
 
     public int getPort() {

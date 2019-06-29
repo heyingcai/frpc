@@ -3,7 +3,9 @@ package com.jibug.frpc.common.cluster.registry;
 import com.jibug.frpc.common.config.ConsumerConfig;
 import com.jibug.frpc.common.config.ProviderConfig;
 import com.jibug.frpc.common.config.RegistryConfig;
+import com.jibug.frpc.common.config.ServerConfig;
 import com.jibug.frpc.common.exception.FrpRuntimeException;
+import com.jibug.frpc.common.util.NetUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -94,6 +96,12 @@ public class ZookeeperRegistry extends Registry implements ApplicationContextAwa
 
     protected void registerProviderUrl(ProviderConfig config) {
         try {
+            ServerConfig serverConfig = config.getServerConfig();
+            StringBuilder urlBuilder = new StringBuilder(200);
+            String host = serverConfig.getHost();
+            if (NetUtils.isInvalidLocalHost(host)) {
+                host = NetUtils.getLocalAddress().getHostName();
+            }
 
         } catch (Exception e) {
 

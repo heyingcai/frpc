@@ -31,11 +31,12 @@ public class FrpcConfig {
     }
 
     private ServerProperties getServerProperties() {
+        String host = env.getProperty(SERVER_HOST, String.valueOf(getIntValue(SERVER_HOST)));
         Integer port = Integer.valueOf(env.getProperty(SERVER_PORT, String.valueOf(getIntValue(SERVER_PORT))));
         String contextPath = env.getProperty(SERVER_CONTEXT_PATH, getStringValue(SERVER_CONTEXT_PATH));
         Integer threadPoolCore = Integer.valueOf(env.getProperty(SERVER_THREAD_POOL_CORE, String.valueOf(getIntValue(SERVER_THREAD_POOL_CORE))));
         Integer threadPoolMax = Integer.valueOf(env.getProperty(SERVER_THREAD_POOL_MAX, String.valueOf(getIntValue(SERVER_THREAD_POOL_MAX))));
-        return new ServerProperties(port, contextPath, threadPoolCore, threadPoolMax);
+        return new ServerProperties(host, port, contextPath, threadPoolCore, threadPoolMax);
     }
 
     private RegistryProperties getRegistryProperties() {

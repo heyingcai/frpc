@@ -47,6 +47,7 @@ public class RpcServiceProxyBean implements Serializable, InitializingBean, Appl
 
             ProviderConfig providerConfig = new ProviderConfig();
             providerConfig.setInterfaceId(bean.getClass().getSimpleName());
+            providerConfig.setServerConfig(serverConfig);
 
             registry.register(providerConfig);
         }
