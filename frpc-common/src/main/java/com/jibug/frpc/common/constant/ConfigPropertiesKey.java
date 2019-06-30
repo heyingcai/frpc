@@ -10,6 +10,7 @@ public class ConfigPropertiesKey {
     public static final String REGISTRY_USERNAME = "frpc.registry.username";
     public static final String REGISTRY_PASSWORD = "frpc.registry.password";
 
+    public static final String SERVER_PROTOCOL = "frpc.server.protocol";
     public static final String SERVER_HOST = "frpc.server.host";
     public static final String SERVER_PORT = "frpc.server.port";
     public static final String SERVER_CONTEXT_PATH = "frpc.server.context.path";

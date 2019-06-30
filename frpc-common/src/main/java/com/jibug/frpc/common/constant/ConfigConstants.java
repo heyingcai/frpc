@@ -4,7 +4,7 @@ package com.jibug.frpc.common.constant;
  * @author heyingcai
  * @date 2019-04-29 11:17
  */
-public class ConfigConsts {
+public class ConfigConstants {
 
     public static final byte PROTOCOL_CODE = (byte) 1;
 

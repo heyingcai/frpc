@@ -9,6 +9,8 @@ import static com.jibug.frpc.common.constant.ConfigPropertiesKey.*;
  */
 public class ServerConfig {
 
+    private String protocol = getStringValue(SERVER_PROTOCOL);
+
     private String host = getStringValue(SERVER_HOST);
 
     private int port = getIntValue(SERVER_PORT);
@@ -28,6 +30,14 @@ public class ServerConfig {
         this.contextPath = contextPath;
         this.threadPoolCore = threadPoolCore;
         this.threadPoolMax = threadPoolMax;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
     }
 
     public String getHost() {

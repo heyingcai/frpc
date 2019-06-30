@@ -4,6 +4,7 @@ import com.jibug.frpc.common.config.ConsumerConfig;
 import com.jibug.frpc.common.config.ProviderConfig;
 import com.jibug.frpc.common.config.RegistryConfig;
 import com.jibug.frpc.common.config.ServerConfig;
+import com.jibug.frpc.common.constant.UrlParamKeyConstants;
 import com.jibug.frpc.common.exception.FrpRuntimeException;
 import com.jibug.frpc.common.util.NetUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +20,9 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import static com.jibug.frpc.common.cluster.registry.utils.RegistryHelper.createKeyParams;
+import static com.jibug.frpc.common.constant.UrlParamKeyConstants.INTERFACE_KEY;
+
 /**
  * @author heyingcai
  */
@@ -31,7 +35,7 @@ public class ZookeeperRegistry extends Registry implements ApplicationContextAwa
         super(registryConfig);
     }
 
-    private ConcurrentMap<ProviderConfig, List<String>> providerUrls = new ConcurrentHashMap<>();
+    private ConcurrentMap<ProviderConfig, String> providerUrls = new ConcurrentHashMap<>();
 
 
     @Override
@@ -94,18 +98,4 @@ public class ZookeeperRegistry extends Registry implements ApplicationContextAwa
         this.applicationContext = applicationContext;
     }
 
-    protected void registerProviderUrl(ProviderConfig config) {
-        try {
-            ServerConfig serverConfig = config.getServerConfig();
-            StringBuilder urlBuilder = new StringBuilder(200);
-            String host = serverConfig.getHost();
-            if (NetUtils.isInvalidLocalHost(host)) {
-                host = NetUtils.getLocalAddress().getHostName();
-            }
-
-        } catch (Exception e) {
-
-        }
-
-    }
 }

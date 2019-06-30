@@ -4,7 +4,7 @@ import com.jibug.frpc.common.cluster.enums.HaStrategyType;
 import com.jibug.frpc.common.cluster.enums.LoadBalanceType;
 import com.jibug.frpc.common.codec.compress.CompressEnum;
 import com.jibug.frpc.common.codec.serialize.SerializeProtocolEnum;
-import com.jibug.frpc.common.constant.ConfigConsts;
+import com.jibug.frpc.common.constant.ConfigConstants;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -34,7 +34,7 @@ public @interface RpcInterface {
      *
      * @return
      */
-    int port() default ConfigConsts.DEFAULT_SERVER_PORT;
+    int port() default ConfigConstants.DEFAULT_SERVER_PORT;
 
     /**
      * 服务提供者的bean name
@@ -48,7 +48,7 @@ public @interface RpcInterface {
      *
      * @return
      */
-    int timeout() default ConfigConsts.DEFAULT_TIMEOUT;
+    int timeout() default ConfigConstants.DEFAULT_TIMEOUT;
 
     /**
      * 数据压缩类型
