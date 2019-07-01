@@ -11,7 +11,7 @@ import static com.jibug.frpc.common.constant.UrlParamKeyConstants.INTERFACE_KEY;
  */
 public class RegistryHelper {
 
-    public static String convertConfigToUrls(ProviderConfig config) {
+    public static String convertConfigToUrl(ProviderConfig config) {
         ServerConfig serverConfig = config.getServerConfig();
         StringBuilder urlBuilder = new StringBuilder(200);
         String host = serverConfig.getHost();
@@ -24,6 +24,14 @@ public class RegistryHelper {
                 .append(serverConfig.getContextPath()).append("?")
                 .append(createKeyParams(INTERFACE_KEY, config.getInterfaceId()));
         return urlBuilder.toString();
+    }
+
+    public static String createProviderPath(String interfaceName) {
+        return "/frpc/" + interfaceName + "/provider";
+    }
+
+    public static String createConsumerPath(String interfaceName) {
+        return "/frpc/" + interfaceName + "/consumer";
     }
 
     public static String createKeyParams(String key, Object value) {
