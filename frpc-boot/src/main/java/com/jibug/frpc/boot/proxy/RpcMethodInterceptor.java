@@ -1,6 +1,7 @@
 package com.jibug.frpc.boot.proxy;
 
 import com.jibug.frpc.common.cluster.enums.LoadBalanceType;
+import com.jibug.frpc.common.cluster.registry.ProviderInfo;
 import com.jibug.frpc.common.cluster.registry.Registry;
 import com.jibug.frpc.common.cluster.support.AbstractLoadBalancer;
 import com.jibug.frpc.common.cluster.support.HashLoadBalancer;
@@ -71,13 +72,15 @@ public class RpcMethodInterceptor implements MethodInterceptor {
         FrpcRequestHeader requestHeader = new FrpcRequestHeader();
         FrpcRequestBody requestBody = new FrpcRequestBody(method.getDeclaringClass().getName(), serviceConfig.getServiceName(), methodName, method.getParameterTypes(), arguments);
 
-        loadBalancer.select(new FrpcRequest(requestHeader, requestBody), resolveConsumerConfig(), registry);
+        ProviderInfo providerInfo = loadBalancer.select(new FrpcRequest(requestHeader, requestBody), resolveConsumerConfig(), registry);
+
         return null;
     }
 
     private ConsumerConfig resolveConsumerConfig() {
         ConsumerConfig consumerConfig = new ConsumerConfig();
         consumerConfig.setConnectTimeout(serviceConfig.getTimeout());
+        consumerConfig.setInterfaceId(serviceConfig.getServiceName());
         if (StringUtils.isNotBlank(serviceConfig.getHost()) && serviceConfig.getPort() != 0) {
             consumerConfig.setDirectAddr(serviceConfig.getHost() + ":" + serviceConfig.getPort());
         }
