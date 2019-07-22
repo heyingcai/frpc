@@ -5,6 +5,8 @@ package com.jibug.frpc.common.cluster.registry;
  */
 public class ProviderInfo {
 
+    private String protocol;
+
     private String url;
 
     private String host;
@@ -17,6 +19,14 @@ public class ProviderInfo {
     public ProviderInfo(String host, int port) {
         this.host = host;
         this.port = port;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
     }
 
     public String getUrl() {

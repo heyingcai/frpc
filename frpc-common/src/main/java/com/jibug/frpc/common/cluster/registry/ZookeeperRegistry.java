@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.imps.CuratorFrameworkState;
+import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import static com.jibug.frpc.common.cluster.registry.utils.RegistryHelper.convertUrlToProvider;
 import static com.jibug.frpc.common.cluster.registry.utils.RegistryHelper.createProviderPath;
 
 /**
@@ -36,6 +38,8 @@ public class ZookeeperRegistry extends Registry implements ApplicationContextAwa
     }
 
     private ConcurrentMap<ProviderConfig, String> providerUrls = new ConcurrentHashMap<>();
+
+    private static final ConcurrentMap<ConsumerConfig, PathChildrenCache> INTERFACE_PROVIDER_CACHE = new ConcurrentHashMap<>();
 
 
     @Override
@@ -104,7 +108,18 @@ public class ZookeeperRegistry extends Registry implements ApplicationContextAwa
 
     @Override
     public List<ProviderInfo> subscribe(ConsumerConfig config) {
-        return null;
+        try {
+            String providerPath = createProviderPath(config.getInterfaceId());
+            PathChildrenCache pathChildrenCache = INTERFACE_PROVIDER_CACHE.get(config);
+            if (pathChildrenCache == null) {
+                pathChildrenCache = new PathChildrenCache(zkClient, providerPath, true);
+                pathChildrenCache.start(PathChildrenCache.StartMode.BUILD_INITIAL_CACHE);
+                INTERFACE_PROVIDER_CACHE.put(config, pathChildrenCache);
+            }
+            return convertUrlToProvider(providerPath, pathChildrenCache.getCurrentData());
+        } catch (Exception e) {
+            throw new FrpRuntimeException("Failed to subscribe providerInfo", e);
+        }
     }
 
     @Override
