@@ -6,6 +6,8 @@ package com.jibug.frpc.common.constant;
  */
 public class ConfigConstants {
 
+    public static final byte PROTOCOL_MAGIC = (byte) 0x08;
+
     public static final byte PROTOCOL_CODE = (byte) 1;
 
     public static final byte PROTOCOL_VERSION = (byte) 1;
