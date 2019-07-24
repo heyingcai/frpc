@@ -12,38 +12,38 @@ public enum SerializeProtocolEnum {
     /**
      * jdk原生序列化
      */
-    JDK_SERIALIZE("jdkserialize", null),
+    JDK_SERIALIZE((byte) 0, null),
 
     /**
      * hessian序列化
      */
-    HESSIAN_SERIALIZE("hessian", HessianSerialize.class),
+    HESSIAN_SERIALIZE((byte) (1 << 2), HessianSerialize.class),
 
     /**
      * kryo序列化
      */
-    KRYO_SERIALIZE("kryo", KryoSerialize.class),
+    KRYO_SERIALIZE((byte) (1 << 3), KryoSerialize.class),
 
     /**
      * json序列化
      */
-    JSON_SERIALIZE("json", JsonSerialize.class);
+    JSON_SERIALIZE((byte) (1 << 4), JsonSerialize.class);
 
-    private String serialize;
+    private byte value;
 
     private Class<?> clazz;
 
-    SerializeProtocolEnum(String serialize, Class<?> clazz) {
-        this.serialize = serialize;
+    SerializeProtocolEnum(byte value, Class<?> clazz) {
+        this.value = value;
         this.clazz = clazz;
     }
 
-    public void setSerialize(String serialize) {
-        this.serialize = serialize;
+    public byte getValue() {
+        return value;
     }
 
-    public String getSerialize() {
-        return serialize;
+    public void setValue(byte value) {
+        this.value = value;
     }
 
     public Class<?> getClazz() {

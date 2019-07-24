@@ -1,15 +1,23 @@
 package com.jibug.frpc.boot.proxy;
 
+import com.jibug.frpc.common.cluster.enums.HaStrategyType;
 import com.jibug.frpc.common.cluster.enums.LoadBalanceType;
+import com.jibug.frpc.common.cluster.enums.RequestType;
 import com.jibug.frpc.common.cluster.registry.ProviderInfo;
 import com.jibug.frpc.common.cluster.registry.Registry;
+import com.jibug.frpc.common.cluster.support.AbstractHaStrategy;
 import com.jibug.frpc.common.cluster.support.AbstractLoadBalancer;
+import com.jibug.frpc.common.cluster.support.FailFastHaStrategy;
+import com.jibug.frpc.common.cluster.support.FailoverHaStrategy;
 import com.jibug.frpc.common.cluster.support.HashLoadBalancer;
 import com.jibug.frpc.common.cluster.support.RandomLoadBalancer;
 import com.jibug.frpc.common.cluster.support.RoundRobinLoadBalancer;
+import com.jibug.frpc.common.codec.compress.CompressEnum;
+import com.jibug.frpc.common.codec.serialize.SerializeProtocolEnum;
 import com.jibug.frpc.common.config.ConsumerConfig;
 import com.jibug.frpc.common.config.MethodConfig;
 import com.jibug.frpc.common.config.ServiceConfig;
+import com.jibug.frpc.common.constant.ConfigConstants;
 import com.jibug.frpc.common.model.FrpcRequest;
 import com.jibug.frpc.common.model.FrpcRequestBody;
 import com.jibug.frpc.common.model.FrpcRequestHeader;
@@ -18,6 +26,8 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author heyingcai
@@ -28,11 +38,13 @@ public class RpcMethodInterceptor implements MethodInterceptor {
 
     private AbstractLoadBalancer loadBalancer;
 
+    private AbstractHaStrategy haStrategy;
+
     private Registry registry;
 
+    public Map<Method, FrpcRequestHeader> headerMapCache = new ConcurrentHashMap<>();
 
     public RpcMethodInterceptor() {
-
     }
 
     public RpcMethodInterceptor(ServiceConfig serviceConfig, Registry registry) {
@@ -44,14 +56,21 @@ public class RpcMethodInterceptor implements MethodInterceptor {
             case HASH:
                 loadBalancer = new HashLoadBalancer();
                 break;
-            case RANDOM:
-                loadBalancer = new RandomLoadBalancer();
-                break;
             case ROUND_ROBIN:
                 loadBalancer = new RoundRobinLoadBalancer();
                 break;
+            case RANDOM:
             default:
                 loadBalancer = new RandomLoadBalancer();
+                break;
+        }
+        HaStrategyType haStrategyType = serviceConfig.getHaStrategyType();
+        switch (haStrategyType) {
+            case FAIL_OVER:
+                haStrategy = new FailoverHaStrategy();
+                break;
+            default:
+                haStrategy = new FailFastHaStrategy();
                 break;
         }
     }
@@ -69,12 +88,21 @@ public class RpcMethodInterceptor implements MethodInterceptor {
             methodName = methodConfig.getMethodName();
         }
 
-        FrpcRequestHeader requestHeader = new FrpcRequestHeader();
+        FrpcRequestHeader requestHeader = headerMapCache.get(method);
+        if (requestHeader == null) {
+            byte compress = methodConfig != null ? methodConfig.getCompressType().getValue() : CompressEnum.NONE.getValue();
+            byte codec = methodConfig != null ? methodConfig.getSerializeProtocol().getValue() : SerializeProtocolEnum.JDK_SERIALIZE.getValue();
+            requestHeader = new FrpcRequestHeader(ConfigConstants.PROTOCOL_MAGIC, ConfigConstants.PROTOCOL_VERSION, compress, codec);
+            headerMapCache.put(method, requestHeader);
+        }
+
         FrpcRequestBody requestBody = new FrpcRequestBody(method.getDeclaringClass().getName(), serviceConfig.getServiceName(), methodName, method.getParameterTypes(), arguments);
 
-        ProviderInfo providerInfo = loadBalancer.select(new FrpcRequest(requestHeader, requestBody), resolveConsumerConfig(), registry);
+        ProviderInfo providerInfo = loadBalancer.select(new FrpcRequest<>(requestHeader, requestBody), resolveConsumerConfig(), registry);
 
-        return null;
+        RequestType requestType = methodConfig != null ? methodConfig.getRequestType() : RequestType.SYNC;
+
+        return haStrategy.remoteCall(new FrpcRequest<>(requestHeader, requestBody), requestType, providerInfo);
     }
 
     private ConsumerConfig resolveConsumerConfig() {
