@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 public class FrpcResponse implements Serializable {
 
+    private static final long serialVersionUID = -768874658726107188L;
     /**
      * 响应消息id
      */

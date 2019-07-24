@@ -1,6 +1,5 @@
 package com.jibug.frpc.common.model;
 
-import com.jibug.frpc.common.util.SnowflakeIdWorker;
 
 import java.io.Serializable;
 
@@ -9,6 +8,7 @@ import java.io.Serializable;
  */
 public class FrpcRequestBody implements Serializable {
 
+    private static final long serialVersionUID = -5384768926455740035L;
     /**
      * 请求的具体的类名，接口名
      */
@@ -44,7 +44,6 @@ public class FrpcRequestBody implements Serializable {
         this.parameterTypes = parameterTypes;
         this.parameters = parameters;
     }
-
 
 
     public String getClassName() {

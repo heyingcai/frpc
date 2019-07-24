@@ -16,6 +16,11 @@
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.jibug.frpc</groupId>
+            <artifactId>frpc-common</artifactId>
+            <version>0.1.0</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -1,10 +1,13 @@
 package com.jibug.frpc.common.model;
 
+import java.io.Serializable;
+
 /**
  * @author heyingcai
  */
-public class FrpcRequest<T> {
+public class FrpcRequest<T> implements Serializable {
 
+    private static final long serialVersionUID = -1331504264053595369L;
     private FrpcRequestHeader requestHeader;
 
     private T requestBody;
