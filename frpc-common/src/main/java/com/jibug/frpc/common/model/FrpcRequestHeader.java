@@ -17,6 +17,8 @@ public class FrpcRequestHeader implements Serializable {
 
     private byte compress;
 
+    private byte type;
+
     private byte codec;
 
     private String requestId;
@@ -27,11 +29,12 @@ public class FrpcRequestHeader implements Serializable {
         this.requestId = String.valueOf(SnowflakeIdWorker.getInstance().nextId());
     }
 
-    public FrpcRequestHeader(byte magic, byte version, byte compress, byte codec) {
+    public FrpcRequestHeader(byte magic, byte version, byte compress, byte codec, byte type) {
         this.magic = magic;
         this.version = version;
         this.compress = compress;
         this.codec = codec;
+        this.type = type;
         this.requestId = String.valueOf(SnowflakeIdWorker.getInstance().nextId());
     }
 
@@ -85,5 +88,13 @@ public class FrpcRequestHeader implements Serializable {
 
     public void setSize(Integer size) {
         this.size = size;
+    }
+
+    public byte getType() {
+        return type;
+    }
+
+    public void setType(byte type) {
+        this.type = type;
     }
 }

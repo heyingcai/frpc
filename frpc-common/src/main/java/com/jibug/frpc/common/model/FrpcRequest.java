@@ -1,5 +1,9 @@
 package com.jibug.frpc.common.model;
 
+import com.jibug.frpc.common.codec.compress.CompressEnum;
+import com.jibug.frpc.common.codec.serialize.SerializeProtocolEnum;
+import com.jibug.frpc.common.constant.ConfigConstants;
+
 import java.io.Serializable;
 
 /**
@@ -34,5 +38,10 @@ public class FrpcRequest<T> implements Serializable {
 
     public void setRequestBody(T requestBody) {
         this.requestBody = requestBody;
+    }
+
+    public static FrpcRequest createHeartbeatMsg() {
+        return new FrpcRequest<>(new FrpcRequestHeader(ConfigConstants.PROTOCOL_MAGIC, ConfigConstants.PROTOCOL_VERSION,
+                CompressEnum.NONE.getValue(), SerializeProtocolEnum.JDK_SERIALIZE.getValue(), MessageType.HEARTBEAT.getType()), null);
     }
 }

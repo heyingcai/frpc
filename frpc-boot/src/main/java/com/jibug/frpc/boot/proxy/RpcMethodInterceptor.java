@@ -21,6 +21,7 @@ import com.jibug.frpc.common.constant.ConfigConstants;
 import com.jibug.frpc.common.model.FrpcRequest;
 import com.jibug.frpc.common.model.FrpcRequestBody;
 import com.jibug.frpc.common.model.FrpcRequestHeader;
+import com.jibug.frpc.common.model.MessageType;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang3.StringUtils;
@@ -92,7 +93,7 @@ public class RpcMethodInterceptor implements MethodInterceptor {
         if (requestHeader == null) {
             byte compress = methodConfig != null ? methodConfig.getCompressType().getValue() : CompressEnum.NONE.getValue();
             byte codec = methodConfig != null ? methodConfig.getSerializeProtocol().getValue() : SerializeProtocolEnum.JDK_SERIALIZE.getValue();
-            requestHeader = new FrpcRequestHeader(ConfigConstants.PROTOCOL_MAGIC, ConfigConstants.PROTOCOL_VERSION, compress, codec);
+            requestHeader = new FrpcRequestHeader(ConfigConstants.PROTOCOL_MAGIC, ConfigConstants.PROTOCOL_VERSION, compress, codec, MessageType.REQUEST.getType());
             headerMapCache.put(method, requestHeader);
         }
 
