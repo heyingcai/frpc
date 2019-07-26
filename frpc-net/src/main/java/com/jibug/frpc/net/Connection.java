@@ -24,7 +24,9 @@ public class Connection implements Closeable {
 
     @Override
     public void close() throws IOException {
-        channel.close();
+        if (channel != null) {
+            channel.close();
+        }
     }
 
     public Channel getChannel() {
@@ -33,5 +35,9 @@ public class Connection implements Closeable {
 
     public void setChannel(Channel channel) {
         this.channel = channel;
+    }
+
+    public boolean isActive() {
+        return channel != null && channel.isActive();
     }
 }

@@ -38,7 +38,7 @@ public class ConnectionPool implements Pool<Connection>{
 
     @Override
     public boolean contains(Connection connection) {
-        return false;
+        return container.contains(connection);
     }
 
     @Override

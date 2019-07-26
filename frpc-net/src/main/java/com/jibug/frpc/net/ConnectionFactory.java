@@ -1,6 +1,4 @@
-package com.jibug.frpc.net.client;
-
-import com.jibug.frpc.net.Connection;
+package com.jibug.frpc.net;
 
 /**
  * @author heyingcai

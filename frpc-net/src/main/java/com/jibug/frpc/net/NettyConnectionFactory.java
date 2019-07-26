@@ -1,9 +1,6 @@
-package com.jibug.frpc.net.client;
+package com.jibug.frpc.net;
 
 import com.jibug.frpc.common.exception.FrpRuntimeException;
-import com.jibug.frpc.common.util.NetUtils;
-import com.jibug.frpc.net.Connection;
-import com.jibug.frpc.net.NamedThreadFactory;
 import com.jibug.frpc.net.handler.RpcClientHandler;
 import com.jibug.frpc.net.handler.RpcDecoder;
 import com.jibug.frpc.net.handler.RpcEncoder;
