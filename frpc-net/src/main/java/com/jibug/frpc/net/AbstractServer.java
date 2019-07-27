@@ -5,9 +5,9 @@ package com.jibug.frpc.net;
  */
 public abstract class AbstractServer {
 
-    protected abstract void doInit();
+    public abstract void doInit();
 
-    protected abstract void doStart() throws InterruptedException;
+    public abstract void doStart() throws InterruptedException;
 
-    protected abstract void doStop();
+    public abstract void doStop();
 }

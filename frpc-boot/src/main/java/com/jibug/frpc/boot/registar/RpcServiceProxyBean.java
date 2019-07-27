@@ -1,18 +1,18 @@
 package com.jibug.frpc.boot.registar;
 
-import com.jibug.frpc.common.annotation.RpcInterface;
-import com.jibug.frpc.common.annotation.RpcMethod;
 import com.jibug.frpc.common.annotation.RpcService;
 import com.jibug.frpc.common.cluster.registry.Registry;
-import com.jibug.frpc.common.config.*;
-import org.apache.commons.lang3.StringUtils;
+import com.jibug.frpc.common.config.ProviderConfig;
+import com.jibug.frpc.common.config.RegistryConfig;
+import com.jibug.frpc.common.config.ServerConfig;
+import com.jibug.frpc.net.AbstractServer;
+import com.jibug.frpc.net.NettyServer;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import java.io.Serializable;
-import java.lang.reflect.Method;
 
 /**
  * @author heyingcai
@@ -30,6 +30,8 @@ public class RpcServiceProxyBean implements Serializable, InitializingBean, Appl
     private Registry registry;
 
     private ServerConfig serverConfig;
+
+    private AbstractServer server;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -51,6 +53,8 @@ public class RpcServiceProxyBean implements Serializable, InitializingBean, Appl
 
             registry.register(providerConfig);
         }
+        server = new NettyServer(serverConfig);
+        server.doInit();
     }
 
     public RegistryConfig getRegistryConfig() {
@@ -72,5 +76,6 @@ public class RpcServiceProxyBean implements Serializable, InitializingBean, Appl
     @Override
     public void afterPropertiesSet() throws Exception {
         this.registry = (Registry) applicationContext.getBean(FrpcRegistrar.REGISTRY_CENTER);
+        server.doStart();
     }
 }
