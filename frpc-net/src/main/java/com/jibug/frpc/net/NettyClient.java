@@ -1,6 +1,7 @@
 package com.jibug.frpc.net;
 
 import com.jibug.frpc.common.exception.FrpRuntimeException;
+import com.jibug.frpc.net.handler.HeartbeatHandler;
 import com.jibug.frpc.net.handler.RpcClientHandler;
 import com.jibug.frpc.net.handler.RpcDecoder;
 import com.jibug.frpc.net.handler.RpcEncoder;
@@ -22,9 +23,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author heyingcai
  */
-public class NettyConnectionFactory extends ConnectionFactory {
+public class NettyClient extends ConnectionFactory {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NettyConnectionFactory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NettyClient.class);
 
     private Bootstrap bootstrap;
 
@@ -56,7 +57,7 @@ public class NettyConnectionFactory extends ConnectionFactory {
         ch.pipeline().addLast("encode", new RpcEncoder());
         ch.pipeline().addLast("decode", new RpcDecoder());
         ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(15000, 150000, 0, TimeUnit.MILLISECONDS));
-
+        ch.pipeline().addLast("heartbeatHandler", new HeartbeatHandler());
         ch.pipeline().addLast("handler", new RpcClientHandler());
     }
 

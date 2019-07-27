@@ -21,15 +21,21 @@ public class ServerConfig {
 
     private int threadPoolMax = getIntValue(SERVER_THREAD_POOL_MAX);
 
+    private int threadKeepAliveTime = getIntValue(SERVER_THREAD_POOL_KEEP_ALIVE_TIME);
+
+    private int threadQueueSize = getIntValue(SERVER_THREAD_POOL_QUEUE_SIZE);
+
     public ServerConfig() {
     }
 
-    public ServerConfig(String host, int port, String contextPath, int threadPoolCore, int threadPoolMax) {
+    public ServerConfig(String host, int port, String contextPath, int threadPoolCore, int threadPoolMax, int threadKeepAliveTime, int threadQueueSize) {
         this.host = host;
         this.port = port;
         this.contextPath = contextPath;
         this.threadPoolCore = threadPoolCore;
         this.threadPoolMax = threadPoolMax;
+        this.threadKeepAliveTime = threadKeepAliveTime;
+        this.threadQueueSize = threadQueueSize;
     }
 
     public String getProtocol() {
@@ -78,5 +84,21 @@ public class ServerConfig {
 
     public void setThreadPoolMax(int threadPoolMax) {
         this.threadPoolMax = threadPoolMax;
+    }
+
+    public int getThreadKeepAliveTime() {
+        return threadKeepAliveTime;
+    }
+
+    public void setThreadKeepAliveTime(int threadKeepAliveTime) {
+        this.threadKeepAliveTime = threadKeepAliveTime;
+    }
+
+    public int getThreadQueueSize() {
+        return threadQueueSize;
+    }
+
+    public void setThreadQueueSize(int threadQueueSize) {
+        this.threadQueueSize = threadQueueSize;
     }
 }

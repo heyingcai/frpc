@@ -129,7 +129,9 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
         String contextPath = environment.getProperty(SERVER_CONTEXT_PATH, getStringValue(SERVER_CONTEXT_PATH));
         Integer threadPoolCore = Integer.valueOf(environment.getProperty(SERVER_THREAD_POOL_CORE, String.valueOf(getIntValue(SERVER_THREAD_POOL_CORE))));
         Integer threadPoolMax = Integer.valueOf(environment.getProperty(SERVER_THREAD_POOL_MAX, String.valueOf(getIntValue(SERVER_THREAD_POOL_MAX))));
-        return new ServerConfig(host, port, contextPath, threadPoolCore, threadPoolMax);
+        Integer threadPoolKeepAliveTime = Integer.valueOf(environment.getProperty(SERVER_THREAD_POOL_KEEP_ALIVE_TIME, String.valueOf(getIntValue(SERVER_THREAD_POOL_KEEP_ALIVE_TIME))));
+        Integer threadPoolQueueSize = Integer.valueOf(environment.getProperty(SERVER_THREAD_POOL_QUEUE_SIZE, String.valueOf(getIntValue(SERVER_THREAD_POOL_QUEUE_SIZE))));
+        return new ServerConfig(host, port, contextPath, threadPoolCore, threadPoolMax, threadPoolKeepAliveTime, threadPoolQueueSize);
 
     }
 
