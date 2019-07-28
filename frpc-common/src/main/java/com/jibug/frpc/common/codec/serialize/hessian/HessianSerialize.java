@@ -8,7 +8,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * @author heyingcai
@@ -23,12 +22,13 @@ public class HessianSerialize implements Serialize {
      * @throws IOException
      */
     @Override
-    public void serialize(OutputStream output, Object object) throws IOException {
+    public byte[] serialize(Object object) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         Hessian2Output out = new Hessian2Output(bos);
         out.writeObject(object);
         out.completeMessage();
         out.close();
+        return bos.toByteArray();
     }
 
     /**

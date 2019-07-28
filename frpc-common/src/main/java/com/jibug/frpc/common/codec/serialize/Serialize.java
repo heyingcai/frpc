@@ -12,12 +12,11 @@ public interface Serialize {
     /**
      * 序列化
      *
-     * @param outputStream
      * @param object
      * @return
      * @throws IOException
      */
-    void serialize(OutputStream outputStream, Object object) throws IOException;
+    byte[] serialize(Object object) throws IOException;
 
     /**
      * 反序列化

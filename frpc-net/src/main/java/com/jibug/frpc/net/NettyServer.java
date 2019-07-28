@@ -34,7 +34,7 @@ public class NettyServer extends AbstractServer {
 
     private EventLoopGroup bossGroup = new NioEventLoopGroup(1, new NamedThreadFactory("Rpc-netty-server-boss", false));
 
-    private EventLoopGroup workGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors() * 2, new NamedThreadFactory("Rpc-netty-server-boss", true));
+    private EventLoopGroup workGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors() * 2, new NamedThreadFactory("Rpc-netty-server-worker", true));
 
     protected ThreadPoolExecutor serviceThreadPool;
 
@@ -43,7 +43,7 @@ public class NettyServer extends AbstractServer {
     }
 
     @Override
-    protected void doInit() {
+    public void doInit() {
         this.serviceThreadPool = new ThreadPoolExecutor(serverConfig.getThreadPoolCore()
                 , serverConfig.getThreadPoolMax(), serverConfig.getThreadKeepAliveTime(), TimeUnit.MILLISECONDS
                 , serverConfig.getThreadQueueSize() > 0 ? new LinkedBlockingQueue<>(
@@ -72,7 +72,7 @@ public class NettyServer extends AbstractServer {
     }
 
     @Override
-    protected void doStart() throws InterruptedException {
+    public void doStart() throws InterruptedException {
         String host = serverConfig.getHost();
         int port = serverConfig.getPort();
         if (StringUtils.isNotBlank(host)) {
@@ -83,7 +83,7 @@ public class NettyServer extends AbstractServer {
     }
 
     @Override
-    protected void doStop() {
+    public void doStop() {
         if (channelFuture != null) {
             channelFuture.channel().close();
         }

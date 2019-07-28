@@ -8,8 +8,6 @@ import com.jibug.frpc.common.codec.serialize.Serialize;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 
 /**
  * @author heyingcai
@@ -17,12 +15,13 @@ import java.io.OutputStreamWriter;
 public class JsonSerialize implements Serialize {
 
     @Override
-    public void serialize(OutputStream output, Object object) throws IOException {
-        SerializeWriter out = new SerializeWriter(new OutputStreamWriter(output));
+    public byte[] serialize(Object object) throws IOException {
+        SerializeWriter out = new SerializeWriter();
         JSONSerializer serializer = new JSONSerializer(out);
         serializer.config(SerializerFeature.WriteEnumUsingToString, true);
         serializer.config(SerializerFeature.WriteClassName, true);
         serializer.write(object);
+        return out.toBytes("utf-8");
     }
 
     @Override

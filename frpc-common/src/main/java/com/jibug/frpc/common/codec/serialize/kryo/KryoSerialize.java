@@ -8,9 +8,9 @@ import com.esotericsoftware.kryo.io.KryoObjectOutput;
 import com.jibug.frpc.common.codec.serialize.Serialize;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * kryo 线程不安全
@@ -23,11 +23,13 @@ public class KryoSerialize implements Serialize {
     private static final ThreadLocal<Kryo> KRYOS_MAP = ThreadLocal.withInitial(() -> new Kryo());
 
     @Override
-    public void serialize(OutputStream outputStream, Object object) throws IOException {
+    public byte[] serialize(Object object) throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
         Kryo kryo = KRYOS_MAP.get();
-        KryoObjectOutput out = new KryoObjectOutput(kryo, new FastOutput(outputStream));
+        KryoObjectOutput out = new KryoObjectOutput(kryo, new FastOutput(bos));
         out.writeObject(object);
         out.flush();
+        return bos.toByteArray();
     }
 
     @Override

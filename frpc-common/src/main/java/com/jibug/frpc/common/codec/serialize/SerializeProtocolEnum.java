@@ -38,6 +38,16 @@ public enum SerializeProtocolEnum {
         this.clazz = clazz;
     }
 
+    public static Class<?> getSerialize(byte value) {
+        SerializeProtocolEnum[] values = values();
+        for (SerializeProtocolEnum s : values) {
+            if (s.value == value) {
+                return s.clazz;
+            }
+        }
+        return null;
+    }
+
     public byte getValue() {
         return value;
     }
