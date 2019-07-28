@@ -31,14 +31,19 @@ public class RpcEncoder extends MessageToByteEncoder<FrpcRequest> {
             out.writeInt(0);
             return;
         }
-
         SerializePool serializePool = SerializePool.getInstance();
         Serialize serialize = serializePool.getObject(requestHeader.getCodec());
-        byte[] bytes = serialize.serialize(requestBody);
         CompressPool compressPool = CompressPool.getInstance();
         Compress compress = compressPool.getObject(requestHeader.getCompress());
-        byte[] data = compress.compress(bytes);
-        out.writeInt(data.length);
-        out.writeBytes(data);
+        try {
+            byte[] bytes = serialize.serialize(requestBody);
+            byte[] data = compress.compress(bytes);
+            out.writeInt(data.length);
+            out.writeBytes(data);
+        } finally {
+            serializePool.restore(requestHeader.getCodec(), serialize);
+            compressPool.restore(requestHeader.getCompress(), compress);
+        }
+
     }
 }
