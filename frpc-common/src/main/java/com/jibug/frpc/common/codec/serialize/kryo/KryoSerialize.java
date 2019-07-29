@@ -10,7 +10,6 @@ import com.jibug.frpc.common.codec.serialize.Serialize;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * kryo 线程不安全
@@ -33,7 +32,7 @@ public class KryoSerialize implements Serialize {
     }
 
     @Override
-    public <T> T deserialize(InputStream inputStream, byte[] bytes, Class<T> clazz) throws IOException, ClassNotFoundException {
+    public <T> T deserialize(byte[] bytes, Class<T> clazz) throws IOException, ClassNotFoundException {
         Kryo kryo = KRYOS_MAP.get();
         kryo.register(clazz);
         KryoObjectInput input = new KryoObjectInput(kryo, new FastInput(new ByteArrayInputStream(bytes)));

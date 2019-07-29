@@ -38,6 +38,16 @@ public class FrpcRequestHeader implements Serializable {
         this.requestId = SnowflakeIdWorker.getInstance().nextId();
     }
 
+    public FrpcRequestHeader(byte magic, byte version, byte compress, byte type, byte codec, Long requestId, Integer size) {
+        this.magic = magic;
+        this.version = version;
+        this.compress = compress;
+        this.type = type;
+        this.codec = codec;
+        this.requestId = requestId;
+        this.size = size;
+    }
+
     public Long getRequestId() {
         return requestId;
     }

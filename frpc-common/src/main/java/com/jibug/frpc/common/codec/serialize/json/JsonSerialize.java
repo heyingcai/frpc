@@ -7,7 +7,6 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jibug.frpc.common.codec.serialize.Serialize;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * @author heyingcai
@@ -25,7 +24,7 @@ public class JsonSerialize implements Serialize {
     }
 
     @Override
-    public <T> T deserialize(InputStream inputStream, byte[] bytes, Class<T> clazz) throws IOException, ClassNotFoundException {
+    public <T> T deserialize(byte[] bytes, Class<T> clazz) throws IOException, ClassNotFoundException {
         return JSON.parseObject(new String(bytes), clazz);
     }
 
