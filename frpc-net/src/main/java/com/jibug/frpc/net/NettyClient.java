@@ -54,8 +54,9 @@ public class NettyClient extends ConnectionFactory {
     }
 
     public void initClientChannel(SocketChannel ch) {
-        ch.pipeline().addLast("encode", new RpcEncoder());
-        ch.pipeline().addLast("decode", new RpcDecoder());
+        ch.pipeline().addLast("encoder", new RpcEncoder());
+        ch.pipeline().addLast("decoder", new RpcDecoder());
+
         ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(15000, 150000, 0, TimeUnit.MILLISECONDS));
         ch.pipeline().addLast("heartbeatHandler", new HeartbeatHandler());
         ch.pipeline().addLast("handler", new RpcClientHandler());

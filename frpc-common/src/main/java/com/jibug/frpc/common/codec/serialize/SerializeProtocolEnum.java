@@ -1,6 +1,7 @@
 package com.jibug.frpc.common.codec.serialize;
 
 import com.jibug.frpc.common.codec.serialize.hessian.HessianSerialize;
+import com.jibug.frpc.common.codec.serialize.jdk.JdkSerialize;
 import com.jibug.frpc.common.codec.serialize.json.JsonSerialize;
 import com.jibug.frpc.common.codec.serialize.kryo.KryoSerialize;
 
@@ -12,7 +13,7 @@ public enum SerializeProtocolEnum {
     /**
      * jdk原生序列化
      */
-    JDK_SERIALIZE((byte) 0, null),
+    JDK_SERIALIZE((byte) 0, JdkSerialize.class),
 
     /**
      * hessian序列化

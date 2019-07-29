@@ -7,7 +7,7 @@ import org.apache.commons.pool2.impl.GenericKeyedObjectPoolConfig;
 /**
  * @author heyingcai
  */
-public abstract class CommonObjectPool<K, V> {
+public class CommonObjectPool<K, V> {
 
     public CommonObjectPool() {
     }

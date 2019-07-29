@@ -18,6 +18,7 @@ public class RpcEncoder extends MessageToByteEncoder<FrpcRequest> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, FrpcRequest msg, ByteBuf out) throws Exception {
+        System.out.println("aaaaaaaaaa");
         FrpcRequestHeader requestHeader = msg.getRequestHeader();
         out.writeByte(requestHeader.getMagic());
         out.writeByte(requestHeader.getVersion());
@@ -36,13 +37,16 @@ public class RpcEncoder extends MessageToByteEncoder<FrpcRequest> {
         CompressPool compressPool = CompressPool.getInstance();
         Compress compress = compressPool.getObject(requestHeader.getCompress());
         try {
+            byte[] data;
             byte[] bytes = serialize.serialize(requestBody);
-            byte[] data = compress.compress(bytes);
+            data = compress != null ? compress.compress(bytes) : bytes;
             out.writeInt(data.length);
             out.writeBytes(data);
         } finally {
             serializePool.restore(requestHeader.getCodec(), serialize);
-            compressPool.restore(requestHeader.getCompress(), compress);
+            if (compress != null) {
+                compressPool.restore(requestHeader.getCompress(), compress);
+            }
         }
 
     }
