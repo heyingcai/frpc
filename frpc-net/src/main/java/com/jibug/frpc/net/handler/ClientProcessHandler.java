@@ -8,7 +8,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 /**
  * @author heyingcai
  */
-public class RpcClientHandler extends SimpleChannelInboundHandler<FrpcRequest<FrpcResponse>> {
+public class ClientProcessHandler extends SimpleChannelInboundHandler<FrpcRequest<FrpcResponse>> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FrpcRequest<FrpcResponse> msg) throws Exception {

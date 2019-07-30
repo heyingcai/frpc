@@ -16,7 +16,7 @@ public class SerializePool extends CommonObjectPool<Byte, Serialize> {
 
     public static SerializePool getInstance() {
         if (pool == null) {
-            synchronized (Serialize.class) {
+            synchronized (SerializePool.class) {
                 if (pool == null) {
                     GenericKeyedObjectPoolConfig config = new GenericKeyedObjectPoolConfig();
                     config.setMaxTotal(500);

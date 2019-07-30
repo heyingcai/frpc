@@ -9,4 +9,8 @@ public abstract class ConnectionFactory {
 
     public abstract Connection connect(String ip, int port);
 
+    public abstract Connection connect(String address);
+
+
+
 }

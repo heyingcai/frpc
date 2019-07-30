@@ -2,7 +2,7 @@ package com.jibug.frpc.net;
 
 import com.jibug.frpc.common.exception.FrpRuntimeException;
 import com.jibug.frpc.net.handler.HeartbeatHandler;
-import com.jibug.frpc.net.handler.RpcClientHandler;
+import com.jibug.frpc.net.handler.ClientProcessHandler;
 import com.jibug.frpc.net.handler.RpcDecoder;
 import com.jibug.frpc.net.handler.RpcEncoder;
 import io.netty.bootstrap.Bootstrap;
@@ -59,7 +59,7 @@ public class NettyClient extends ConnectionFactory {
 
         ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(15000, 150000, 0, TimeUnit.MILLISECONDS));
         ch.pipeline().addLast("heartbeatHandler", new HeartbeatHandler());
-        ch.pipeline().addLast("handler", new RpcClientHandler());
+        ch.pipeline().addLast("handler", new ClientProcessHandler());
     }
 
     @Override
@@ -83,5 +83,11 @@ public class NettyClient extends ConnectionFactory {
             throw new FrpRuntimeException(errMsg, future.cause());
         }
         return new Connection(future.channel());
+    }
+
+    @Override
+    public Connection connect(String address) {
+        String[] strings = address.split(":");
+        return connect(strings[0], Integer.parseInt(strings[1]));
     }
 }
