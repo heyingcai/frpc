@@ -11,7 +11,7 @@ public class NettyConnectionPool extends CommonObjectPool<String, Connection> {
     private static volatile NettyConnectionPool pool = null;
 
     private NettyConnectionPool(GenericKeyedObjectPoolConfig config) {
-        super(new KeyedConnectionPoolFactory(new NettyClient()), config);
+        super(new KeyedConnectionPoolFactory(), config);
     }
 
     public static NettyConnectionPool getInstance() {

@@ -14,14 +14,7 @@ public class KeyedConnectionPoolFactory extends BaseKeyedPooledObjectFactory<Str
 
     private Map<String, ConnectionFactory> connectionFactoryMap = new ConcurrentHashMap<>();
 
-    private ConnectionFactory connectionFactory;
-
     public KeyedConnectionPoolFactory() {
-    }
-
-    public KeyedConnectionPoolFactory(ConnectionFactory connectionFactory) {
-
-        this.connectionFactory = connectionFactory;
     }
 
     @Override
@@ -31,7 +24,7 @@ public class KeyedConnectionPoolFactory extends BaseKeyedPooledObjectFactory<Str
             connectionFactory = new NettyClient();
             connectionFactoryMap.put(address, connectionFactory);
         }
-        Connection connect = this.connectionFactory.connect(address);
+        Connection connect = connectionFactory.connect(address);
         return connect;
     }
 
