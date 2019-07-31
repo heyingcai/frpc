@@ -4,10 +4,15 @@ import org.apache.commons.pool2.BaseKeyedPooledObjectFactory;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * @author heyingcai
  */
 public class KeyedConnectionPoolFactory extends BaseKeyedPooledObjectFactory<String, Connection> {
+
+    private Map<String, ConnectionFactory> connectionFactoryMap = new ConcurrentHashMap<>();
 
     private ConnectionFactory connectionFactory;
 
@@ -15,12 +20,18 @@ public class KeyedConnectionPoolFactory extends BaseKeyedPooledObjectFactory<Str
     }
 
     public KeyedConnectionPoolFactory(ConnectionFactory connectionFactory) {
+
         this.connectionFactory = connectionFactory;
     }
 
     @Override
     public Connection create(String address) throws Exception {
-        Connection connect = connectionFactory.connect(address);
+        ConnectionFactory connectionFactory = connectionFactoryMap.get(address);
+        if (connectionFactory == null) {
+            connectionFactory = new NettyClient();
+            connectionFactoryMap.put(address, connectionFactory);
+        }
+        Connection connect = this.connectionFactory.connect(address);
         return connect;
     }
 

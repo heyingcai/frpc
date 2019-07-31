@@ -6,4 +6,5 @@ package com.jibug.frpc.net.client;
 public abstract class AbstractRemoting {
 
 
+
 }

@@ -11,7 +11,7 @@ public class FrpcResponse implements Serializable {
     /**
      * 响应消息id
      */
-    private String responseId;
+    private Long responseId;
 
     /**
      * 请求消息id
@@ -28,11 +28,11 @@ public class FrpcResponse implements Serializable {
      */
     private String errMsg = "";
 
-    public String getResponseId() {
+    public Long getResponseId() {
         return responseId;
     }
 
-    public void setResponseId(String responseId) {
+    public void setResponseId(Long responseId) {
         this.responseId = responseId;
     }
 
