@@ -48,4 +48,16 @@ public class Connection implements Closeable {
     public boolean isActive() {
         return channel != null && channel.isActive();
     }
+
+    public Invoker getInvoker(long contextId) {
+        return invokerMap.get(contextId);
+    }
+
+    public Invoker addInvoker(Invoker invoker) {
+        return invokerMap.putIfAbsent(invoker.contextId(), invoker);
+    }
+
+    public Invoker removeInvoker(long contextId) {
+        return invokerMap.remove(contextId);
+    }
 }

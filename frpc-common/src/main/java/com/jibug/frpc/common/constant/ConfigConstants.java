@@ -16,4 +16,10 @@ public class ConfigConstants {
 
     public static final int DEFAULT_SERVER_PORT = 9988;
 
+    public static final int SUCCESS_STATUS = 2000;
+
+    public static final int EXCEPTION_STATUS = 4000;
+
+    public static final int TIMEOUT_STATUS = 4008;
+
 }

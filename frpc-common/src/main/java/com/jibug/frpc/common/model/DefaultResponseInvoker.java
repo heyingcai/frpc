@@ -6,11 +6,11 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author heyingcai
  */
-public class DefaultResponseInvoker implements Invoker<FrpcRequest<FrpcResponse>> {
+public class DefaultResponseInvoker implements Invoker<FrpcResponse> {
 
     private final long contextId;
 
-    private volatile FrpcRequest<FrpcResponse> response;
+    private volatile FrpcResponse response;
 
     private final CountDownLatch countDownLatch = new CountDownLatch(1);
 
@@ -19,20 +19,20 @@ public class DefaultResponseInvoker implements Invoker<FrpcRequest<FrpcResponse>
     }
 
     @Override
-    public FrpcRequest<FrpcResponse> waitResult(long timeoutMillis) throws InterruptedException {
+    public FrpcResponse waitResult(long timeoutMillis) throws InterruptedException {
         countDownLatch.await(timeoutMillis, TimeUnit.MILLISECONDS);
         return response;
     }
 
     @Override
-    public FrpcRequest<FrpcResponse> waitResult() throws InterruptedException {
+    public FrpcResponse waitResult() throws InterruptedException {
         countDownLatch.await();
         return response;
     }
 
     @Override
-    public void putResult(FrpcRequest<FrpcResponse> frpcResponseFrpcRequest) {
-        this.response = frpcResponseFrpcRequest;
+    public void putResult(FrpcResponse response) {
+        this.response = response;
     }
 
     @Override

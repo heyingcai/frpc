@@ -1,4 +1,4 @@
-package com.jibug.frpc.common.cluster.support;
+package com.jibug.frpc.net.support;
 
 import com.jibug.frpc.common.cluster.registry.ProviderInfo;
 import com.jibug.frpc.common.cluster.registry.Registry;

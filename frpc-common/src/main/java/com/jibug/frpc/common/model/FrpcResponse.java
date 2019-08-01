@@ -8,15 +8,11 @@ import java.io.Serializable;
 public class FrpcResponse implements Serializable {
 
     private static final long serialVersionUID = -768874658726107188L;
-    /**
-     * 响应消息id
-     */
-    private Long responseId;
 
     /**
      * 请求消息id
      */
-    private String requestId;
+    private Long requestId;
 
     /**
      * 响应结果
@@ -24,23 +20,30 @@ public class FrpcResponse implements Serializable {
     private Object result;
 
     /**
+     * 响应状态
+     */
+    private Integer status;
+
+    /**
      * 错误结果
      */
     private String errMsg = "";
 
-    public Long getResponseId() {
-        return responseId;
+    public FrpcResponse() {
     }
 
-    public void setResponseId(Long responseId) {
-        this.responseId = responseId;
+    public FrpcResponse(Long requestId, Object result, Integer status, String errMsg) {
+        this.requestId = requestId;
+        this.result = result;
+        this.status = status;
+        this.errMsg = errMsg;
     }
 
-    public String getRequestId() {
+    public Long getRequestId() {
         return requestId;
     }
 
-    public void setRequestId(String requestId) {
+    public void setRequestId(Long requestId) {
         this.requestId = requestId;
     }
 
@@ -50,6 +53,14 @@ public class FrpcResponse implements Serializable {
 
     public void setResult(Object result) {
         this.result = result;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getErrMsg() {

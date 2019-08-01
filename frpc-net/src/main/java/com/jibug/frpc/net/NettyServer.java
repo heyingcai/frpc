@@ -37,19 +37,12 @@ public class NettyServer extends AbstractServer {
 
     private EventLoopGroup workGroup = new NioEventLoopGroup(Runtime.getRuntime().availableProcessors() * 2, new NamedThreadFactory("Rpc-netty-server-worker", true));
 
-    protected ThreadPoolExecutor serviceThreadPool;
-
     public NettyServer(ServerConfig serverConfig) {
         this.serverConfig = serverConfig;
     }
 
     @Override
     public void doInit() {
-        this.serviceThreadPool = new ThreadPoolExecutor(serverConfig.getThreadPoolCore()
-                , serverConfig.getThreadPoolMax(), serverConfig.getThreadKeepAliveTime(), TimeUnit.MILLISECONDS
-                , serverConfig.getThreadQueueSize() > 0 ? new LinkedBlockingQueue<>(
-                serverConfig.getThreadQueueSize()) : new SynchronousQueue<>(), new NamedThreadFactory("RPC-SERVER", true));
-
         serverBootstrap = new ServerBootstrap();
         serverBootstrap.group(bossGroup, workGroup).channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, 1024)
@@ -60,6 +53,10 @@ public class NettyServer extends AbstractServer {
     }
 
     public ChannelInitializer<SocketChannel> newChannelInitializer() {
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(serverConfig.getThreadPoolCore()
+                , serverConfig.getThreadPoolMax(), serverConfig.getThreadKeepAliveTime(), TimeUnit.MILLISECONDS
+                , serverConfig.getThreadQueueSize() > 0 ? new LinkedBlockingQueue<>(
+                serverConfig.getThreadQueueSize()) : new SynchronousQueue<>(), new NamedThreadFactory("RPC-SERVER", true));
         return new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel ch) throws Exception {
@@ -67,7 +64,7 @@ public class NettyServer extends AbstractServer {
                 ch.pipeline().addLast("encoder", new RpcEncoder());
                 ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(0, 0, 150000, TimeUnit.MILLISECONDS));
                 ch.pipeline().addLast("idleHandler", new ServerIdleHander());
-                ch.pipeline().addLast("processHandler", new ServerProcessHandler());
+                ch.pipeline().addLast("processHandler", new ServerProcessHandler(threadPoolExecutor));
             }
         };
 

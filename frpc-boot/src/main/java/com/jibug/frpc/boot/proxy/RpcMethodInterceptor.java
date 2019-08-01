@@ -5,13 +5,14 @@ import com.jibug.frpc.common.cluster.enums.LoadBalanceType;
 import com.jibug.frpc.common.cluster.enums.RequestType;
 import com.jibug.frpc.common.cluster.registry.ProviderInfo;
 import com.jibug.frpc.common.cluster.registry.Registry;
-import com.jibug.frpc.common.cluster.support.AbstractHaStrategy;
-import com.jibug.frpc.common.cluster.support.AbstractLoadBalancer;
-import com.jibug.frpc.common.cluster.support.FailFastHaStrategy;
-import com.jibug.frpc.common.cluster.support.FailoverHaStrategy;
-import com.jibug.frpc.common.cluster.support.HashLoadBalancer;
-import com.jibug.frpc.common.cluster.support.RandomLoadBalancer;
-import com.jibug.frpc.common.cluster.support.RoundRobinLoadBalancer;
+import com.jibug.frpc.net.client.RpcClient;
+import com.jibug.frpc.net.support.AbstractHaStrategy;
+import com.jibug.frpc.net.support.AbstractLoadBalancer;
+import com.jibug.frpc.net.support.FailFastHaStrategy;
+import com.jibug.frpc.net.support.FailoverHaStrategy;
+import com.jibug.frpc.net.support.HashLoadBalancer;
+import com.jibug.frpc.net.support.RandomLoadBalancer;
+import com.jibug.frpc.net.support.RoundRobinLoadBalancer;
 import com.jibug.frpc.common.codec.compress.CompressEnum;
 import com.jibug.frpc.common.codec.serialize.SerializeProtocolEnum;
 import com.jibug.frpc.common.config.ConsumerConfig;
@@ -68,10 +69,10 @@ public class RpcMethodInterceptor implements MethodInterceptor {
         HaStrategyType haStrategyType = serviceConfig.getHaStrategyType();
         switch (haStrategyType) {
             case FAIL_OVER:
-                haStrategy = new FailoverHaStrategy();
+                haStrategy = new FailoverHaStrategy(new RpcClient());
                 break;
             default:
-                haStrategy = new FailFastHaStrategy();
+                haStrategy = new FailFastHaStrategy(new RpcClient());
                 break;
         }
     }
