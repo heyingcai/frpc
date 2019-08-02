@@ -1,6 +1,6 @@
 # frpc
 
-[![Build Status](https://travis-ci.com/heyingcai/frpc.svg?branch=master)](https://travis-ci.org/heyingcai/frpc)
+[![Build Status](https://api.travis-ci.org/heyingcai/frpc.svg?branch=master)](https://travis-ci.org/heyingcai/frpc)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/dempeZheng/forest/blob/master/LICENSE)
 
 
