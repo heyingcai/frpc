@@ -18,7 +18,6 @@ public class RpcEncoder extends MessageToByteEncoder<FrpcRequest> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, FrpcRequest msg, ByteBuf out) throws Exception {
-        System.out.println("aaaaaaaaaa");
         FrpcRequestHeader requestHeader = msg.getRequestHeader();
         out.writeByte(requestHeader.getMagic());
         out.writeByte(requestHeader.getVersion());

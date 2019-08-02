@@ -5,7 +5,7 @@ import com.jibug.frpc.common.cluster.registry.RegistryProtocolEnum;
 import com.jibug.frpc.common.config.RegistryConfig;
 import com.jibug.frpc.common.config.ServerConfig;
 import com.jibug.frpc.common.constant.ConfigPropertiesKey;
-import com.jibug.frpc.common.exception.FrpRuntimeException;
+import com.jibug.frpc.common.exception.FrpcRuntimeException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -111,7 +111,7 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
         String protocol = environment.getProperty(ConfigPropertiesKey.REGISTRY_PROTOCOL);
         Class<?> registryClass = RegistryProtocolEnum.getClassTypeByName(protocol);
         if (registryClass == null) {
-            throw new FrpRuntimeException("The " + protocol + " registry protocol not found, please check the properties.");
+            throw new FrpcRuntimeException("The " + protocol + " registry protocol not found, please check the properties.");
         }
         RegistryConfig registryConfig = new RegistryConfig(protocol, address);
         BeanDefinitionBuilder registryDefinition = BeanDefinitionBuilder.genericBeanDefinition(registryClass);
@@ -124,7 +124,7 @@ public class FrpcRegistrar implements ImportBeanDefinitionRegistrar, Environment
     }
 
     private ServerConfig resolveServerConfig() {
-        String host = environment.getProperty(SERVER_HOST, String.valueOf(getIntValue(SERVER_HOST)));
+        String host = environment.getProperty(SERVER_HOST, String.valueOf(getStringValue(SERVER_HOST)));
         Integer port = Integer.valueOf(environment.getProperty(SERVER_PORT, String.valueOf(getIntValue(SERVER_PORT))));
         String contextPath = environment.getProperty(SERVER_CONTEXT_PATH, getStringValue(SERVER_CONTEXT_PATH));
         Integer threadPoolCore = Integer.valueOf(environment.getProperty(SERVER_THREAD_POOL_CORE, String.valueOf(getIntValue(SERVER_THREAD_POOL_CORE))));

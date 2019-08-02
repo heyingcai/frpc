@@ -1,6 +1,6 @@
 package com.jibug.frpc.common.config;
 
-import com.jibug.frpc.common.exception.FrpRuntimeException;
+import com.jibug.frpc.common.exception.FrpcRuntimeException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +31,7 @@ public class RpcServerConfig {
                 CONFIG.put(entry.getKey().toString(), entry.getValue());
             }
         } catch (IOException e) {
-            throw new FrpRuntimeException("loading frpc-server config error", e);
+            throw new FrpcRuntimeException("loading frpc-server config error", e);
         }
     }
 
@@ -46,7 +46,7 @@ public class RpcServerConfig {
     public static boolean getBooleanValue(String key) {
         Object value = CONFIG.get(key);
         if (value == null) {
-            throw new FrpRuntimeException("The key of " + key + " not found from config");
+            throw new FrpcRuntimeException("The key of " + key + " not found from config");
         } else {
             return Boolean.valueOf(value.toString());
         }
@@ -55,7 +55,7 @@ public class RpcServerConfig {
     public static int getIntValue(String key) {
         Object value = CONFIG.get(key);
         if (value == null) {
-            throw new FrpRuntimeException("The key of " + key + " not found from config");
+            throw new FrpcRuntimeException("The key of " + key + " not found from config");
         } else {
             return Integer.valueOf(value.toString());
         }
@@ -64,7 +64,7 @@ public class RpcServerConfig {
     public static String getStringValue(String key) {
         String value = (String) CONFIG.get(key);
         if (value == null) {
-            throw new FrpRuntimeException("The key of " + key + " not found from config");
+            throw new FrpcRuntimeException("The key of " + key + " not found from config");
         } else {
             return value;
         }

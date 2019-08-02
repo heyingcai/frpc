@@ -7,6 +7,7 @@ import com.jibug.frpc.common.config.RegistryConfig;
 import com.jibug.frpc.common.config.ServerConfig;
 import com.jibug.frpc.net.AbstractServer;
 import com.jibug.frpc.net.NettyServer;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -38,23 +39,27 @@ public class RpcServiceProxyBean implements Serializable, InitializingBean, Appl
         this.applicationContext = applicationContext;
     }
 
-    public void start() {
+    public void start() throws InterruptedException {
         init();
     }
 
-    public void init() {
+    public void init() throws InterruptedException {
         String[] beanNamesForAnnotation = applicationContext.getBeanNamesForAnnotation(RpcService.class);
         for (String beanName : beanNamesForAnnotation) {
             Object bean = applicationContext.getBean(beanName);
 
+            String serviceName = bean.getClass().getAnnotation(RpcService.class).name();
             ProviderConfig providerConfig = new ProviderConfig();
-            providerConfig.setInterfaceId(bean.getClass().getSimpleName());
+            providerConfig.setInterfaceId(StringUtils.isNotBlank(serviceName) ? serviceName : bean.getClass().getSimpleName());
             providerConfig.setServerConfig(serverConfig);
 
             registry.register(providerConfig);
         }
-        server = new NettyServer(serverConfig);
-        server.doInit();
+        if (beanNamesForAnnotation.length > 0) {
+            server = new NettyServer(serverConfig);
+            server.doInit();
+            server.doStart();
+        }
     }
 
     public RegistryConfig getRegistryConfig() {
@@ -76,6 +81,5 @@ public class RpcServiceProxyBean implements Serializable, InitializingBean, Appl
     @Override
     public void afterPropertiesSet() throws Exception {
         this.registry = (Registry) applicationContext.getBean(FrpcRegistrar.REGISTRY_CENTER);
-        server.doStart();
     }
 }

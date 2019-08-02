@@ -46,6 +46,7 @@ public class ServerProcessTask implements Runnable {
 
     @Override
     public void run() {
+        FrpcRequest resultResponse = new FrpcRequest();
         FrpcResponse response = new FrpcResponse();
         Object serviceBean = getServiceBean();
 
@@ -64,6 +65,8 @@ public class ServerProcessTask implements Runnable {
         response.setRequestId(request.getRequestHeader().getRequestId());
         response.setStatus(ConfigConstants.SUCCESS_STATUS);
         response.setResult(result);
-        ctx.writeAndFlush(response);
+        resultResponse.setRequestHeader(request.getRequestHeader());
+        resultResponse.setRequestBody(response);
+        ctx.writeAndFlush(resultResponse);
     }
 }

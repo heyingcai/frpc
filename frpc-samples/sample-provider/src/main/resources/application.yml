@@ -3,4 +3,4 @@ frpc:
     address: localhost:2181
     protocol: zookeeper
   server:
-    port: 123456
+    port: 12345

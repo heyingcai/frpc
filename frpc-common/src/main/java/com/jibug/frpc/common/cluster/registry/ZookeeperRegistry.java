@@ -4,7 +4,7 @@ import com.jibug.frpc.common.cluster.registry.utils.RegistryHelper;
 import com.jibug.frpc.common.config.ConsumerConfig;
 import com.jibug.frpc.common.config.ProviderConfig;
 import com.jibug.frpc.common.config.RegistryConfig;
-import com.jibug.frpc.common.exception.FrpRuntimeException;
+import com.jibug.frpc.common.exception.FrpcRuntimeException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -39,7 +39,7 @@ public class ZookeeperRegistry extends Registry implements ApplicationContextAwa
 
     private ConcurrentMap<ProviderConfig, String> providerUrls = new ConcurrentHashMap<>();
 
-    private static final ConcurrentMap<ConsumerConfig, PathChildrenCache> INTERFACE_PROVIDER_CACHE = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<String, PathChildrenCache> INTERFACE_PROVIDER_CACHE = new ConcurrentHashMap<>();
 
 
     @Override
@@ -49,7 +49,7 @@ public class ZookeeperRegistry extends Registry implements ApplicationContextAwa
         }
         String address = registryConfig.getAddress();
         if (StringUtils.isBlank(address)) {
-            throw new FrpRuntimeException("The registry address is empty.");
+            throw new FrpcRuntimeException("The registry address is empty.");
         }
         zkClient = CuratorFrameworkFactory.builder()
                 .connectString(address)
@@ -71,7 +71,7 @@ public class ZookeeperRegistry extends Registry implements ApplicationContextAwa
         try {
             zkClient.start();
         } catch (Exception e) {
-            throw new FrpRuntimeException("zookeeper client start failed.", e);
+            throw new FrpcRuntimeException("zookeeper client start failed.", e);
         }
         return zkClient.getState() == CuratorFrameworkState.STARTED;
     }
@@ -96,7 +96,7 @@ public class ZookeeperRegistry extends Registry implements ApplicationContextAwa
                 }
             }
         } catch (Exception e) {
-            throw new FrpRuntimeException("Register provider config to Zookeeper failed", e);
+            throw new FrpcRuntimeException("Register provider config to Zookeeper failed", e);
         }
     }
 
@@ -110,15 +110,15 @@ public class ZookeeperRegistry extends Registry implements ApplicationContextAwa
     public List<ProviderInfo> subscribe(ConsumerConfig config) {
         try {
             String providerPath = createProviderPath(config.getInterfaceId());
-            PathChildrenCache pathChildrenCache = INTERFACE_PROVIDER_CACHE.get(config);
+            PathChildrenCache pathChildrenCache = INTERFACE_PROVIDER_CACHE.get(config.getInterfaceId());
             if (pathChildrenCache == null) {
                 pathChildrenCache = new PathChildrenCache(zkClient, providerPath, true);
                 pathChildrenCache.start(PathChildrenCache.StartMode.BUILD_INITIAL_CACHE);
-                INTERFACE_PROVIDER_CACHE.put(config, pathChildrenCache);
+                INTERFACE_PROVIDER_CACHE.put(config.getInterfaceId(), pathChildrenCache);
             }
             return convertUrlToProvider(providerPath, pathChildrenCache.getCurrentData());
         } catch (Exception e) {
-            throw new FrpRuntimeException("Failed to subscribe providerInfo", e);
+            throw new FrpcRuntimeException("Failed to subscribe providerInfo", e);
         }
     }
 
@@ -134,7 +134,7 @@ public class ZookeeperRegistry extends Registry implements ApplicationContextAwa
 
     private CuratorFramework getAndCheckZkClient() {
         if (zkClient == null || zkClient.getState() != CuratorFrameworkState.STARTED) {
-            throw new FrpRuntimeException("Zookeeper client is not available");
+            throw new FrpcRuntimeException("Zookeeper client is not available");
         }
         return zkClient;
     }

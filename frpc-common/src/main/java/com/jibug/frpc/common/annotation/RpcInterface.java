@@ -27,14 +27,14 @@ public @interface RpcInterface {
      *
      * @return
      */
-    String host() default "localhost";
+    String host() default "";
 
     /**
      * port
      *
      * @return
      */
-    int port() default ConfigConstants.DEFAULT_SERVER_PORT;
+    int port() default 0;
 
     /**
      * 服务提供者的bean name

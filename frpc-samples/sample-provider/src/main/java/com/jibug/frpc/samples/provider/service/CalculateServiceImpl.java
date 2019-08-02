@@ -6,7 +6,7 @@ import com.jibug.frpc.samples.api.CalculateService;
 /**
  * @author heyingcai
  */
-@RpcService
+@RpcService(name = "calculateServiceImpl")
 public class CalculateServiceImpl implements CalculateService {
 
     @Override

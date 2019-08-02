@@ -15,8 +15,9 @@ public class TestController {
     private CalculateService calculateService;
 
     @RequestMapping(value = "/sum")
-    public void sum() {
-        calculateService.sum(5, 4);
+    public Integer sum() {
+        int sum = calculateService.sum(5, 4);
+        return sum;
     }
 
 }

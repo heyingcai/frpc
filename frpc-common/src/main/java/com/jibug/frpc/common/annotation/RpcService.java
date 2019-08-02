@@ -15,4 +15,5 @@ import java.lang.annotation.Target;
 @Component
 public @interface RpcService {
 
+    String name() default "";
 }

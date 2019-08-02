@@ -22,9 +22,14 @@ public class RpcClient extends AbstractRemoting {
         this.oneway(connection, request);
     }
 
-    public FrpcResponse sync(String address, FrpcRequest request, long timeoutMillis) throws InterruptedException {
+    public FrpcRequest<FrpcResponse> sync(String address, FrpcRequest request, long timeoutMillis) throws InterruptedException {
         Connection connection = connectionPool.getObject(address);
         return this.sync(connection, request, timeoutMillis);
+    }
+
+    public FrpcRequest<FrpcResponse> sync(String address, FrpcRequest request) throws InterruptedException {
+        Connection connection = connectionPool.getObject(address);
+        return this.sync(connection, request);
     }
 
     public Invoker async(String address, FrpcRequest request) {

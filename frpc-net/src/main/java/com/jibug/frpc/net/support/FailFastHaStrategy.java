@@ -2,7 +2,10 @@ package com.jibug.frpc.net.support;
 
 import com.jibug.frpc.common.cluster.enums.RequestType;
 import com.jibug.frpc.common.cluster.registry.ProviderInfo;
+import com.jibug.frpc.common.constant.ConfigConstants;
+import com.jibug.frpc.common.exception.FrpcRuntimeException;
 import com.jibug.frpc.common.model.FrpcRequest;
+import com.jibug.frpc.common.model.FrpcResponse;
 import com.jibug.frpc.net.client.RpcClient;
 
 /**
@@ -12,7 +15,7 @@ public class FailFastHaStrategy extends AbstractHaStrategy {
 
     private RpcClient rpcClient;
 
-    public FailFastHaStrategy(RpcClient remoting) {
+    public FailFastHaStrategy(RpcClient rpcClient) {
         this.rpcClient = rpcClient;
     }
 
@@ -25,20 +28,18 @@ public class FailFastHaStrategy extends AbstractHaStrategy {
                 return null;
             case SYNC:
                 try {
-                    return rpcClient.sync(address, request, 5000);
+                    FrpcRequest<FrpcResponse> responseFrpcRequest = rpcClient.sync(address, request);
+                    if (responseFrpcRequest.getRequestBody().getStatus() == ConfigConstants.TIMEOUT_STATUS) {
+                        throw new FrpcRuntimeException(responseFrpcRequest.getRequestBody().getErrMsg());
+                    }
+                    return responseFrpcRequest.getRequestBody().getResult();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     return null;
                 }
             case FUTURE:
                 return rpcClient.async(address, request);
-            default:
-                try {
-                    return rpcClient.sync(address, request, 5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    return null;
-                }
         }
+        return null;
     }
 }

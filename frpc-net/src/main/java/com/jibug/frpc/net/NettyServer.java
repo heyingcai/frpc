@@ -62,8 +62,8 @@ public class NettyServer extends AbstractServer {
             protected void initChannel(SocketChannel ch) throws Exception {
                 ch.pipeline().addLast("decoder", new RpcDecoder());
                 ch.pipeline().addLast("encoder", new RpcEncoder());
-                ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(0, 0, 150000, TimeUnit.MILLISECONDS));
-                ch.pipeline().addLast("idleHandler", new ServerIdleHander());
+//                ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(0, 0, 150000, TimeUnit.MILLISECONDS));
+//                ch.pipeline().addLast("idleHandler", new ServerIdleHander());
                 ch.pipeline().addLast("processHandler", new ServerProcessHandler(threadPoolExecutor));
             }
         };

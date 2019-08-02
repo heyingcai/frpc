@@ -5,7 +5,7 @@ import com.jibug.frpc.common.codec.compress.CompressPool;
 import com.jibug.frpc.common.codec.serialize.Serialize;
 import com.jibug.frpc.common.codec.serialize.SerializePool;
 import com.jibug.frpc.common.constant.ConfigConstants;
-import com.jibug.frpc.common.exception.FrpRuntimeException;
+import com.jibug.frpc.common.exception.FrpcRuntimeException;
 import com.jibug.frpc.common.model.FrpcRequest;
 import com.jibug.frpc.common.model.FrpcRequestBody;
 import com.jibug.frpc.common.model.FrpcRequestHeader;
@@ -23,11 +23,12 @@ public class RpcDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+        System.out.println("aaaaa");
         in.markReaderIndex();
         byte magic = in.readByte();
         if (magic != ConfigConstants.PROTOCOL_MAGIC) {
             in.resetReaderIndex();
-            throw new FrpRuntimeException("Can not decode the message, magic: " + magic);
+            throw new FrpcRuntimeException("Can not decode the message, magic: " + magic);
         }
         byte version = in.readByte();
         byte compressValue = in.readByte();
@@ -44,13 +45,13 @@ public class RpcDecoder extends ByteToMessageDecoder {
             CompressPool compressPool = CompressPool.getInstance();
             Compress compress = compressPool.getObject(compressValue);
             try {
-                requestBody = serialize.deserialize(compress.restore(body), FrpcRequestBody.class);
+                requestBody = serialize.deserialize(compress == null ? body : compress.compress(body), FrpcRequestBody.class);
             } finally {
                 serializePool.restore(codec, serialize);
                 compressPool.restore(compressValue, compress);
             }
         }
-        FrpcRequestHeader requestHeader = new FrpcRequestHeader(magic, version, compressValue, codec, type, requestId, msgSize);
+        FrpcRequestHeader requestHeader = new FrpcRequestHeader(magic, version, compressValue, type, codec, requestId, msgSize);
         FrpcRequest request = new FrpcRequest(requestHeader, requestBody);
         out.add(request);
     }
