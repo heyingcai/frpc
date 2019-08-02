@@ -23,7 +23,6 @@ public class RpcDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        System.out.println("aaaaa");
         in.markReaderIndex();
         byte magic = in.readByte();
         if (magic != ConfigConstants.PROTOCOL_MAGIC) {

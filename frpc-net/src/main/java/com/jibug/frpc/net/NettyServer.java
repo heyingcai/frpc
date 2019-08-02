@@ -1,6 +1,7 @@
 package com.jibug.frpc.net;
 
 import com.jibug.frpc.common.config.ServerConfig;
+import com.jibug.frpc.common.util.NetUtils;
 import com.jibug.frpc.net.handler.RpcDecoder;
 import com.jibug.frpc.net.handler.RpcEncoder;
 import com.jibug.frpc.net.handler.ServerIdleHander;
@@ -62,8 +63,8 @@ public class NettyServer extends AbstractServer {
             protected void initChannel(SocketChannel ch) throws Exception {
                 ch.pipeline().addLast("decoder", new RpcDecoder());
                 ch.pipeline().addLast("encoder", new RpcEncoder());
-//                ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(0, 0, 150000, TimeUnit.MILLISECONDS));
-//                ch.pipeline().addLast("idleHandler", new ServerIdleHander());
+                ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(0, 0, 150000, TimeUnit.MILLISECONDS));
+                ch.pipeline().addLast("idleHandler", new ServerIdleHander());
                 ch.pipeline().addLast("processHandler", new ServerProcessHandler(threadPoolExecutor));
             }
         };
@@ -74,7 +75,7 @@ public class NettyServer extends AbstractServer {
     public void doStart() throws InterruptedException {
         String host = serverConfig.getHost();
         int port = serverConfig.getPort();
-        if (StringUtils.isNotBlank(host)) {
+        if (StringUtils.isNotBlank(host) && !NetUtils.isInvalidLocalHost(host)) {
             channelFuture = serverBootstrap.bind(new InetSocketAddress(host, port)).sync();
         } else {
             channelFuture = this.serverBootstrap.bind(new InetSocketAddress(port)).sync();

@@ -42,6 +42,6 @@ public class FrpcRequest<T> implements Serializable {
 
     public static FrpcRequest createHeartbeatMsg() {
         return new FrpcRequest<>(new FrpcRequestHeader(ConfigConstants.PROTOCOL_MAGIC, ConfigConstants.PROTOCOL_VERSION,
-                CompressEnum.NONE.getValue(), SerializeProtocolEnum.JDK_SERIALIZE.getValue(), MessageType.HEARTBEAT.getType()), null);
+                CompressEnum.SNAPPY.getValue(), SerializeProtocolEnum.HESSIAN_SERIALIZE.getValue(), MessageType.HEARTBEAT.getType()), null);
     }
 }

@@ -54,7 +54,7 @@ public class ZookeeperRegistry extends Registry implements ApplicationContextAwa
         zkClient = CuratorFrameworkFactory.builder()
                 .connectString(address)
                 .canBeReadOnly(false)
-                .retryPolicy(new ExponentialBackoffRetry(1000, 3))
+                .retryPolicy(new ExponentialBackoffRetry(10000, 3))
                 .defaultData(null)
                 .build();
     }
