@@ -1,6 +1,7 @@
 package com.jibug.frpc.net.handler;
 
 import com.jibug.frpc.common.codec.compress.Compress;
+import com.jibug.frpc.common.codec.compress.CompressEnum;
 import com.jibug.frpc.common.codec.compress.CompressPool;
 import com.jibug.frpc.common.codec.serialize.Serialize;
 import com.jibug.frpc.common.codec.serialize.SerializePool;
@@ -42,12 +43,17 @@ public class RpcDecoder extends ByteToMessageDecoder {
             SerializePool serializePool = SerializePool.getInstance();
             Serialize serialize = serializePool.getObject(codec);
             CompressPool compressPool = CompressPool.getInstance();
-            Compress compress = compressPool.getObject(compressValue);
+            Compress compress = null;
+            if (compressValue != CompressEnum.NONE.getValue()) {
+                compress = compressPool.getObject(compressValue);
+            }
             try {
                 requestBody = serialize.deserialize(compress == null ? body : compress.compress(body), FrpcRequestBody.class);
             } finally {
                 serializePool.restore(codec, serialize);
-                compressPool.restore(compressValue, compress);
+                if (compress != null) {
+                    compressPool.restore(compressValue, compress);
+                }
             }
         }
         FrpcRequestHeader requestHeader = new FrpcRequestHeader(magic, version, compressValue, type, codec, requestId, msgSize);

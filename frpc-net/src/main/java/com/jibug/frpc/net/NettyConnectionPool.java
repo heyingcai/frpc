@@ -19,7 +19,7 @@ public class NettyConnectionPool extends CommonObjectPool<String, Connection> {
             synchronized (NettyConnectionPool.class) {
                 if (pool == null) {
                     GenericKeyedObjectPoolConfig config = new GenericKeyedObjectPoolConfig();
-                    config.setMaxTotal(100000);
+                    config.setMaxTotalPerKey(100000);
                     config.setMinIdlePerKey(20);
                     config.setMaxIdlePerKey(100);
                     config.setMaxWaitMillis(60000);

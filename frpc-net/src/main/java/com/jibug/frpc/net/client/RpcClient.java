@@ -29,7 +29,11 @@ public class RpcClient extends AbstractRemoting {
 
     public FrpcRequest<FrpcResponse> sync(String address, FrpcRequest request) throws InterruptedException {
         Connection connection = connectionPool.getObject(address);
-        return this.sync(connection, request);
+        try {
+            return this.sync(connection, request);
+        } finally {
+            connectionPool.restore(address, connection);
+        }
     }
 
     public Invoker async(String address, FrpcRequest request) {

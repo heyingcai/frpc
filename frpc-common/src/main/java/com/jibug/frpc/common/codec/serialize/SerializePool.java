@@ -19,7 +19,7 @@ public class SerializePool extends CommonObjectPool<Byte, Serialize> {
             synchronized (SerializePool.class) {
                 if (pool == null) {
                     GenericKeyedObjectPoolConfig config = new GenericKeyedObjectPoolConfig();
-                    config.setMaxTotal(500);
+                    config.setMaxTotalPerKey(500);
                     config.setMinIdlePerKey(20);
                     config.setMaxIdlePerKey(100);
                     config.setMaxWaitMillis(6000);

@@ -20,9 +20,11 @@ public class CompressPool extends CommonObjectPool<Byte, Compress> {
                 if (pool == null) {
                     GenericKeyedObjectPoolConfig config = new GenericKeyedObjectPoolConfig();
                     config.setMaxTotal(500);
+                    config.setMaxTotalPerKey(500);
                     config.setMinIdlePerKey(20);
-                    config.setMaxIdlePerKey(100);
-                    config.setMaxWaitMillis(6000);
+                    config.setMaxWaitMillis(5000);
+//                    config.setMaxIdlePerKey(100);
+//                    config.setMaxWaitMillis(6000);
                     config.setMinEvictableIdleTimeMillis(600000);
                     pool = new CompressPool(config);
                 }
