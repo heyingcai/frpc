@@ -13,4 +13,9 @@ public class CalculateServiceImpl implements CalculateService {
     public int sum(int a, int b) {
         return a + b;
     }
+
+    @Override
+    public String say(String input) {
+        return "hello " + input;
+    }
 }

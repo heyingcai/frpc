@@ -12,4 +12,6 @@ public interface CalculateService {
 
     int sum(int a, int b);
 
+    String say(String input);
+
 }

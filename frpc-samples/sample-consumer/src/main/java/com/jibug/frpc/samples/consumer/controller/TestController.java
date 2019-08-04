@@ -3,6 +3,7 @@ package com.jibug.frpc.samples.consumer.controller;
 import com.jibug.frpc.common.annotation.RpcReference;
 import com.jibug.frpc.samples.api.CalculateService;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -18,6 +19,11 @@ public class TestController {
     public Integer sum() {
         int sum = calculateService.sum(5, 4);
         return sum;
+    }
+
+    @RequestMapping(value = "/say")
+    public String say(@RequestParam("input") String string) {
+        return calculateService.say(string);
     }
 
 }

@@ -9,7 +9,7 @@ import io.netty.handler.timeout.IdleStateEvent;
  * @author heyingcai
  */
 @ChannelHandler.Sharable
-public class ServerIdleHander extends ChannelDuplexHandler {
+public class ServerIdleHandler extends ChannelDuplexHandler {
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
