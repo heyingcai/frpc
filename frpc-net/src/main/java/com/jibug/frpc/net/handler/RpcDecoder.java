@@ -28,7 +28,7 @@ public class RpcDecoder extends ByteToMessageDecoder {
         byte magic = in.readByte();
         if (magic != ConfigConstants.PROTOCOL_MAGIC) {
             in.resetReaderIndex();
-            throw new FrpcRuntimeException("Can not decode the message, magic: " + magic);
+            return;
         }
         byte version = in.readByte();
         byte compressValue = in.readByte();

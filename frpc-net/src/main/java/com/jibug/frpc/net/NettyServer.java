@@ -4,7 +4,7 @@ import com.jibug.frpc.common.config.ServerConfig;
 import com.jibug.frpc.common.util.NetUtils;
 import com.jibug.frpc.net.handler.RpcDecoder;
 import com.jibug.frpc.net.handler.RpcEncoder;
-import com.jibug.frpc.net.handler.ServerIdleHander;
+import com.jibug.frpc.net.handler.ServerIdleHandler;
 import com.jibug.frpc.net.handler.ServerProcessHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -64,7 +64,7 @@ public class NettyServer extends AbstractServer {
                 ch.pipeline().addLast("decoder", new RpcDecoder());
                 ch.pipeline().addLast("encoder", new RpcEncoder());
                 ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(0, 0, 150000, TimeUnit.MILLISECONDS));
-                ch.pipeline().addLast("idleHandler", new ServerIdleHander());
+                ch.pipeline().addLast("idleHandler", new ServerIdleHandler());
                 ch.pipeline().addLast("processHandler", new ServerProcessHandler(threadPoolExecutor));
             }
         };
