@@ -6,11 +6,12 @@ import com.jibug.frpc.common.config.ProviderConfig;
 import com.jibug.frpc.common.config.RegistryConfig;
 import com.jibug.frpc.common.exception.FrpcRuntimeException;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.imps.CuratorFrameworkState;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
+import org.apache.curator.framework.state.ConnectionState;
+import org.apache.curator.framework.state.ConnectionStateListener;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
@@ -58,6 +59,17 @@ public class ZookeeperRegistry extends Registry implements ApplicationContextAwa
                 .retryPolicy(new ExponentialBackoffRetry(10000, 3))
                 .defaultData(null)
                 .build();
+
+        zkClient.getConnectionStateListenable().addListener(new ConnectionStateListener() {
+            @Override
+            public void stateChanged(CuratorFramework curatorFramework, ConnectionState connectionState) {
+                if (connectionState == ConnectionState.RECONNECTED) {
+                    for (ProviderConfig providerConfig : providerUrls.keySet()) {
+                        register(providerConfig);
+                    }
+                }
+            }
+        });
     }
 
     @Override
