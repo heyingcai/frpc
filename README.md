@@ -14,9 +14,32 @@
 * 支持负载均衡，服务可用性配置。
 
 ## 快速开始
-### Server端
-启动类配置如下：
+
+写一个api服务，接口如下：
+```java
+//指定服务提供者的service名称（spring ioc bean name）
+@RpcInterface(serviceName = "calculateServiceImpl")
+public interface CalculateService {
+
+    int sum(int a, int b);
+}
+
 ```
+
+### Server端
+application.yml配置:
+```yaml
+frpc:
+  registry:
+    address: localhost:2181
+    protocol: zookeeper
+  server:
+    port: 123456
+
+```
+
+启动类配置如下：
+```java
 @SpringBootApplication
 //启用Frpc框架，并指定扫描路径
 @EnableFrpc(basePackages = "com.jibug")
@@ -29,19 +52,9 @@ public class Application {
 
 
 ```
-
-写一个服务，接口如下：
-```
-@RpcInterface(serverName = "cal-server", serviceName = "calculateService", host = "127.0.0.1", port = 8000)
-public interface CalculateService {
-
-    int sum(int a, int b);
-}
-
-```
 同时编写对应的实现类：
 使用@RpcService注解标注在实现类上
-```
+```java
 @RpcService
 public class CalculateServiceImpl implements CalculateService {
 
@@ -52,20 +65,20 @@ public class CalculateServiceImpl implements CalculateService {
 }
 ```
 
+### Client端
 application.yml配置:
-```
+```yaml
 frpc:
   registry:
-    address: localhost:2181
+    address: localhost:2181 
     protocol: zookeeper
   server:
     port: 123456
 
 ```
 
-### Client端
 启动类配置如下：
-```
+```java
 @SpringBootApplication
 //启用Frpc框架，并指定扫描路径
 @EnableFrpc(basePackages = "com.jibug")
@@ -79,7 +92,7 @@ public class Application {
 
 ```
 在需要引用服务的地方使用@RpcReference注解进行注入
-```
+```java
     @RpcReference
     private CalculateService calculateService;
 ```
