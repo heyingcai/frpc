@@ -31,14 +31,14 @@ public class ServerProcessTask implements Runnable {
         if (StringUtils.isNotBlank(serviceName)) {
             serviceBean = SpringApplicationContext.getBean(serviceName);
         }
-        String className = request.getRequestBody().getClassName();
-        Class<?> aClass = null;
-        try {
-            aClass = Class.forName(className);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
         if (serviceBean == null) {
+            String className = request.getRequestBody().getClassName();
+            Class<?> aClass = null;
+            try {
+                aClass = Class.forName(className);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
             serviceBean = SpringApplicationContext.getBean(aClass);
         }
         return serviceBean;
