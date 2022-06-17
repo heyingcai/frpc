@@ -44,7 +44,7 @@
         <commons-pool2.version>2.2</commons-pool2.version>
         <snappy-java.version>1.1.1.6</snappy-java.version>
         <hession.version>4.0.38</hession.version>
-        <fastjson.version>1.2.47</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <lzo.version>1.0.5</lzo.version>
         <lz4.version>1.2.0</lz4.version>
         <esotericsoftware.kryo.version>2.24.0</esotericsoftware.kryo.version>
